@@ -20,7 +20,8 @@ def insertData(id,title, date, originText):
     if checkDup(id) == True:
         return False
 
-    sql = "INSERT INTO notify VALUES (%d, %s, %s,%s)" %(id, title, date, originText)
+    sql = "INSERT INTO notify (id, title,date,origin) VALUES (%d, '%s', '%s','%s')" %(id, title, date, originText)
+    print(sql)
     cur.execute(sql)
     conn.commit();
 
@@ -44,4 +45,13 @@ def clearData():
     cur.execute(sql)
     conn.commit()
 
+def close():
+    global conn, curser
+    curser.close()
+    conn.close()
+
+
 #checkDup(1)
+
+if __name__ == "__main__":
+    insertData(2,"3","2000-1-1","-")

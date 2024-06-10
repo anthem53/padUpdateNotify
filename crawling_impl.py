@@ -9,9 +9,17 @@ def crawling ():
     elements = cr.getElementsByTagName('tr')
     result = []
     for e in elements:        
-        result.append(e.text.split())
+        temp = e.text.split()
+        tempResult = []
+        tempResult.append(temp[0])
+        tempResult.append(" ".join(temp[1:-1]))
+        tempResult.append(temp[-1])
+        tempResult.append(e.text)
+        result.append(tempResult)
         #print(e.text)
-    print(result)
-    return result
+    print(*result[1:],sep="\n")
+    return result[1:]
     
-crawling()
+
+if __name__ == "__main__":
+    crawling()
