@@ -1,7 +1,9 @@
 
 
 while True :
-    command = int(input())
+    print("1. 스케줄링 시작\n2. 종료.")
+
+    command = int(input(">>>>>> "))
     
     if command == 1 :
         
@@ -12,5 +14,6 @@ while True :
         # logic ON
         
     else : 
-        # 
-        pass
+        print("종료합니다.")
+        break
+        
