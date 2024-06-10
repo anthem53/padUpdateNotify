@@ -73,6 +73,7 @@ def waitTag(tagName):
 
 
 if __name__ == "__main__":
+    init_driver();
     url = "https://pad.neocyon.com/W/notice/list.aspx"
     move(url)
     
