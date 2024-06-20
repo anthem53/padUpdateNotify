@@ -5,6 +5,7 @@ def crawling ():
     cr.init_driver()
 
     cr.move("https://pad.neocyon.com/W/notice/list.aspx")
+    cr.waitSecond(5)
 
     elements = cr.getElementsByTagName('tr')
     result = []
@@ -16,8 +17,8 @@ def crawling ():
         tempResult.append(temp[-1])
         tempResult.append(e.text)
         result.append(tempResult)
-        #print(e.text)
-    print(*result[1:],sep="\n")
+        print(e.text)
+    print("[INFO] crawlilng END")
     return result[1:]
     
 

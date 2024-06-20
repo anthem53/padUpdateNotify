@@ -12,6 +12,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
+import time
+
 driver = None
 
 def init_driver(): 
@@ -69,6 +71,9 @@ def waitTag(tagName):
     global driver
     WebDriverWait(driver, timeout=10).until(EC.presence_of_element_located((By.TAG_NAME, tagName)))
 
+def waitSecond(second):
+    time.sleep(second)
+
 #driver.get("http://naver.com")
 
 
@@ -77,7 +82,9 @@ if __name__ == "__main__":
     url = "https://pad.neocyon.com/W/notice/list.aspx"
     move(url)
     
-    WebDriverWait(driver, timeout=10).until(EC.presence_of_element_located((By.TAG_NAME, 'tr')))
+    WebDriverWait(driver, timeout=10).until(EC.presence_of_element_located((By.TAG_NAME, 'tbody')))
+    
+    time.sleep(5)
     
     elements = driver.find_elements(By.TAG_NAME, 'tr')
     for e in elements:

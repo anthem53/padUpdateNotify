@@ -1,19 +1,24 @@
+import schedule
+import threading
+import time
+import mail
 
 
-while True :
-    print("1. 스케줄링 시작\n2. 종료.")
-
-    command = int(input(">>>>>> "))
     
-    if command == 1 :
+def notify_job():
+    try:
+        mail.sendEmail(mail.generateMessage())
+    except :
+        mail.sendEmail(mail.generateErrorMessage())
+        print("mail 전송이 되지 아니하였습니다.")
+
+
+def schedule_notify():
+    schedule.every().day.at("18:00").do(notify_job)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+    
         
-        # Logic 1. 크롤링
-        
-        # Logic 2. email 보내기
-        pass
-        # logic ON
-        
-    else : 
-        print("종료합니다.")
-        break
-        
+notify_thread = threading.Thread(target=schedule_notify)
+

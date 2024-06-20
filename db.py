@@ -1,17 +1,16 @@
 import pymysql
 
 conn = None;
-conn = pymysql.connect (host="127.0.0.1", user="root", password="12345",db="padNotify",charset="utf8")
+cur = None
 
-cur = conn.cursor()
 
 #cur.execute("INSERT INTO  notify VALUES (1,'TESTTitle','2000-01-01','origin text')")
 
 #conn.commit()
 
 def init_db():
-    global conn
-    conn = pymysql.connect (host="127.0.0.1", user="root", password="12345",db="padNotify",charset="utf8")
+    global conn, cur
+    conn = pymysql.connect (host="127.0.0.1", user="root", password="1234",db="padNotify",charset="utf8")
     cur = conn.cursor()
 
 def insertData(id,title, date, originText):
@@ -46,12 +45,14 @@ def clearData():
     conn.commit()
 
 def close():
-    global conn, curser
-    curser.close()
+    global conn, cur
+    cur.close()
     conn.close()
 
 
 #checkDup(1)
 
 if __name__ == "__main__":
-    insertData(2,"3","2000-1-1","-")
+    init_db()
+    #insertData(2,"3","2000-1-1","-")
+    insertData(44982, '[극악] 칭호 배포 관련 안내', '2024-06-12','4498 [극악] 칭호 배포  관련 안내 2024-06-12')

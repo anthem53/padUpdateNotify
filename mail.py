@@ -21,10 +21,18 @@ def generateMessage():
 
     db.close()
     
+    if result == "신규 업데이트 내용\n\n":
+        result += "새로운 업데이트 내용이 없습니다."
+    
     return MIMEText(result)
 
+def generateErrorMessage():
+    return MIMEText("에러로 인해 업데이트 체크 시스템이 종료되었습니다. 재기동 해주십시오.")
 
-def sendEmail():
+def generateCustomMessage(content:str):
+    return MIMEText(content)
+
+def sendEmail(message):
     configInfo = dict()
 
     f= open("mail.config",'r')
@@ -52,7 +60,7 @@ def sendEmail():
 
     #내용을 입력하는 MIMEText => 다른 라이브러리 사용 가능
     #msg = MIMEText('내용 : 퍼즐앤드래곤 신규 업데이트')
-    msg = generateMessage()
+    msg = message
     msg['Subject'] = '퍼즐앤드래곤 신규 업데이트'
 
     #이메일을 보내기 위한 설정(Cc도 가능)
@@ -62,5 +70,7 @@ def sendEmail():
     smtp.quit()
 
 
+
+
 if __name__ == "__main__":
-    sendEmail()
+    sendEmail(generateMessage())
