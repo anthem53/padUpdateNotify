@@ -10,7 +10,19 @@ cur = None
 
 def init_db():
     global conn, cur
-    conn = pymysql.connect (host="127.0.0.1", user="root", password="1234",db="padNotify",charset="utf8")
+    configInfo = dict()
+
+    f= open("db.config",'r')
+
+    while True:
+        line = f.readline().strip()
+        if line =="":
+            break
+        else:
+            parsed = line.split("=")
+            configInfo[parsed[0]] = parsed[1]
+
+    conn = pymysql.connect (host="127.0.0.1", user=configInfo["id"], password=configInfo["password"],db="padNotify",charset="utf8")
     cur = conn.cursor()
 
 def insertData(id,title, date, originText):
