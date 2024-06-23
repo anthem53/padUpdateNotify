@@ -16,6 +16,7 @@ def notify_job():
 
 
 def schedule_notify():
+    print("[INFO] 스케줄이 시작되었습니다.")
     schedule.every().day.at("18:00").do(notify_job)
     while True:
         schedule.run_pending()

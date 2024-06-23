@@ -1,1 +1,1 @@
-nohup ./notify.sh > output.log 2>&1 &
+nohup python main.py > output.log 2>&1 &
