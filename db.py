@@ -32,7 +32,7 @@ def insertData(id,title, date, originText):
         return False
 
     sql = "INSERT INTO notify (id, title,date,origin) VALUES (%d, '%s', '%s','%s')" %(id, title, date, originText)
-    print(sql)
+    #print(sql)
     cur.execute(sql)
     conn.commit();
 

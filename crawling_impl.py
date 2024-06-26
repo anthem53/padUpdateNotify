@@ -17,7 +17,7 @@ def crawling ():
         tempResult.append(temp[-1])
         tempResult.append(e.text)
         result.append(tempResult)
-        print(e.text)
+        #print(e.text)
     print("[INFO] crawlilng END")
     return result[1:]
     

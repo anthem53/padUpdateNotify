@@ -23,6 +23,9 @@ def generateMessage():
     
     if result == "신규 업데이트 내용\n\n":
         result += "새로운 업데이트 내용이 없습니다."
+    else:pass
+    
+    result += "\n\n\n 퍼즐앤드래곤 공식 홈페이지 사이트 : https://pad.neocyon.com/W/"
     
     return MIMEText(result)
 
@@ -39,7 +42,7 @@ def sendEmail(message):
 
     while True:
         line = f.readline().strip()
-        print(line)
+        #print(line)
         if line =="":
             break
         else:
