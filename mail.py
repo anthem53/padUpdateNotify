@@ -25,7 +25,7 @@ def generateMessage():
         result += "새로운 업데이트 내용이 없습니다."
     else:pass
     
-    result += "\n\n\n 퍼즐앤드래곤 공식 홈페이지 사이트 : https://pad.neocyon.com/W/"
+    result += "\n\n\n 퍼즐앤드래곤 공식 홈페이지 사이트 : https://pad.neocyon.com/W/notice/list.aspx"
     
     return MIMEText(result)
 
