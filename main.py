@@ -23,7 +23,11 @@ def schedule_notify():
         time.sleep(1)
     
         
-notify_thread = threading.Thread(target=schedule_notify)
 
-notify_thread.start()
+
+if __name__ == '__main__':
+    #notify_job();
+    notify_thread = threading.Thread(target=schedule_notify)
+
+    notify_thread.start()
 
