@@ -3,27 +3,25 @@ from email.mime.text import MIMEText
 import crawling_impl
 import db
 
-def generateMessage():
-    newDatas = crawling_impl.crawling()
+def generateMessage(newDatas):
     
-
     result = "신규 업데이트 내용\n\n"
-
-    db.init_db()
-    for id, title , date, ori in newDatas:
-        
-        if db.checkDup(int(id)) == False:
-            result = result + "%s %s %s\n" %(id, title, date)
-
-    db.clearData()
-    for id, title , date,ori in newDatas:
-        db.insertData(int(id),title,date,ori)
-
-    db.close()
     
-    if result == "신규 업데이트 내용\n\n":
+    if len(newDatas) > 0 :
+        db.init_db()
+
+        for id, title , date, ori in newDatas:
+            if db.checkDup(int(id)) == False:
+                result = result + "%s %s %s\n" %(id, title, date)
+
+        db.clearData()
+
+        for id, title , date,ori in newDatas:
+            db.insertData(int(id),title,date,ori)
+
+        db.close()
+    else : 
         result += "새로운 업데이트 내용이 없습니다."
-    else:pass
     
     result += "\n\n\n 퍼즐앤드래곤 공식 홈페이지 사이트 : https://pad.neocyon.com/W/notice/list.aspx"
     
