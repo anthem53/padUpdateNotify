@@ -14,8 +14,10 @@ from selenium.webdriver.common.by import By
 
 import time
 
+# 전역으로 변수 선언.
 driver = None
 
+# 셀레니움 드라이브 초기화
 def init_driver(): 
     global driver
     # 브라우저 꺼짐 방지
@@ -33,29 +35,33 @@ def init_driver():
     driver = webdriver.Chrome(service=service, options = chrome_options)
 
 # 이동하려는 해당 웹페이지 주소 할당
-
 def move(url):
     global driver
     driver.get(url)
     
+#뒤로가기 
 def back():
     global driver
     driver.back()
     
+# 새로고침
 def refresh():
     global driver
     driver.refresh()
     
+# 앞으로가기
 def forward():
     global driver
     driver.forward()
 
+# 주어진 xpath에 해당하는 요소 가져옴.
 def getElementByXpath(xpath):
     global driver
     # '''//*[@id="list"]/tbody'''
     elem = driver.find_element(By.XPATH,xpath)
     return elem
     
+# 주어진 태그네임에해당하는 모든 요소를 리스트로 반환
 def getElementsByTagName(tagName):
     global driver
     elements = driver.find_elements(By.TAG_NAME, 'tr')
@@ -67,10 +73,12 @@ def getElementsByTagName(tagName):
     '''
     return elements
 
+# 해당 시간 기다림.
 def waitTag(tagName):
     global driver
     WebDriverWait(driver, timeout=10).until(EC.presence_of_element_located((By.TAG_NAME, tagName)))
 
+# 정말 고정된 초 동안 기다림.
 def waitSecond(second):
     time.sleep(second)
 

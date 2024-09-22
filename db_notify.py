@@ -1,6 +1,7 @@
 import db
 import crawling_impl
 
+# 중복 되지 않은 항목만 추출
 def getNewDatas():
 
     newDatas = crawling_impl.crawling()

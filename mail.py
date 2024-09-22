@@ -3,19 +3,23 @@ from email.mime.text import MIMEText
 import crawling_impl
 import db
 
+# Create MimeText element with processded string message.
 def generateMessage(newDatas):
     
     result = "신규 업데이트 내용\n\n"
     
+    # 신규 내용이 있는 경우 
     if len(newDatas) > 0 :
         db.init_db()
-
+        
+        # 해당 내용을 메일 내용에 추가
         for id, title , date, ori in newDatas:
-            if db.checkDup(int(id)) == False:
-                result = result + "%s %s %s\n" %(id, title, date)
-
+            result = result + "%s %s %s\n" %(id, title, date)
+        
+        # 기존 DB를 비우기
         db.clearData()
 
+        # 새로운 내용을 추가 
         for id, title , date,ori in newDatas:
             db.insertData(int(id),title,date,ori)
 
@@ -27,13 +31,17 @@ def generateMessage(newDatas):
     
     return MIMEText(result)
 
+# send Error message
 def generateErrorMessage():
     return MIMEText("에러로 인해 업데이트 체크 시스템이 종료되었습니다. 재기동 해주십시오.")
 
+
+# send given Message without processing process
 def generateCustomMessage(content:str):
     return MIMEText(content)
 
-def sendEmail(message):
+# message is MIMEText type
+def sendEmail(message:MIMEText):
     configInfo = dict()
 
     f= open("mail.config",'r')
@@ -74,4 +82,4 @@ def sendEmail(message):
 
 
 if __name__ == "__main__":
-    sendEmail(generateMessage())
+    sendEmail(generateCustomMessage("커스텀 테스트"))

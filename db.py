@@ -1,5 +1,7 @@
 import pymysql
 
+
+# Global DB variable
 conn = None;
 cur = None
 
@@ -8,6 +10,8 @@ cur = None
 
 #conn.commit()
 
+
+# Init db variable, conn and cur
 def init_db():
     global conn, cur
     configInfo = dict()
@@ -25,6 +29,8 @@ def init_db():
     conn = pymysql.connect (host="127.0.0.1", user=configInfo["id"], password=configInfo["password"],db="padNotify",charset="utf8")
     cur = conn.cursor()
 
+
+# Insert Data to notify 
 def insertData(id,title, date, originText):
     global conn, cur
 
@@ -38,6 +44,7 @@ def insertData(id,title, date, originText):
 
     return True
 
+# Check item duplication. Find row with id, and If found, return True, and False
 def checkDup(id):
     global conn, cur
     sql = "SELECT 1 FROM notify WHERE id=%d" % (id)
@@ -49,6 +56,7 @@ def checkDup(id):
     else:
         return False
 
+# clear Notify table. remove all elements in this table.
 def clearData():
     global conn, cur
 
@@ -56,13 +64,12 @@ def clearData():
     cur.execute(sql)
     conn.commit()
 
+# close connection.
 def close():
     global conn, cur
     cur.close()
     conn.close()
 
-
-#checkDup(1)
 
 if __name__ == "__main__":
     init_db()
