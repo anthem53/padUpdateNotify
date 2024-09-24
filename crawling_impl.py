@@ -1,7 +1,8 @@
 import crawling as cr
+import log
 
 def crawling ():
-    print("[INFO] crawlilng START")
+    log.info("Crawling START")
     #크롤링을 위한 셀레니움 객체 초기화.
     cr.init_driver()
 
@@ -29,8 +30,7 @@ def crawling ():
         except : 
             pass
         #print(e.text)
-    print("[INFO] crawlilng END")
-
+    log.info("Crawling END")
     #시작타이틀 제외한 값만 넣기
     return result[1:]
     
