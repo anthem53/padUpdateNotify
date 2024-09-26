@@ -6,10 +6,6 @@ import mail
 import crawling_impl
 import db_notify
 import log
-
-
-def currentTime():
-    return "["+ time.strftime("%Y-%m-%d %H:%M:%S") + "]  "
     
 def notify_job():
     try:
