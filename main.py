@@ -10,7 +10,8 @@ import log
 def notify_job():
     try:
         log.info("메일 발송 이벤트가 시작 되었습니다.")
-        newDatas = db_notify.getNewDatas()
+        rawDatas = crawling_impl.crawling();
+        newDatas = db_notify.getNewDatas(rawDatas)
         #newDatas = []
         if (len(newDatas) > 0 ):
             mail.sendEmail(mail.generateMessage(newDatas))

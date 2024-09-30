@@ -1,7 +1,7 @@
 import crawling as cr
 import log
 
-def crawling ():
+def crawling (isDebug = False):
     log.info("Crawling START")
     #크롤링을 위한 셀레니움 객체 초기화.
     cr.init_driver()
@@ -15,19 +15,22 @@ def crawling ():
 
     # 결과 저장용 리스트 객체
     result = []
-    for e in elements:        
-        temp = e.text.split()
-        tempResult = []
-        tempResult.append(temp[0])
-        tempResult.append(" ".join(temp[1:-1]))
-        tempResult.append(temp[-1])
-        tempResult.append(e.text)
+    for e in elements:       
+        if isDebug == True:
+           log.info(e.text) 
+        else: pass
 
+        temp = e.text.split()
         # 만약 NO에 공지라고 되어있으면 예외처리, 아닌 경우만 result에 넣기
-        try:
+        if(temp[0].isdigit()):
             int(temp[0])
+            tempResult = []
+            tempResult.append(temp[0])
+            tempResult.append(" ".join(temp[1:-1]))
+            tempResult.append(temp[-1])
+            tempResult.append(e.text)
             result.append(tempResult)
-        except : 
+        else:
             pass
         #print(e.text)
     log.info("Crawling END")
@@ -36,4 +39,4 @@ def crawling ():
     
 
 if __name__ == "__main__":
-    crawling()
+    crawling(False)
