@@ -22,10 +22,12 @@ pip install schedule ,selenium ,webdriver_manager,pymysql
 db.config , mail.config를 해당 project 내 만들어야함. 
 
 ## db.config
-> id=db_id
-> password=db_password
+>
+id=db_id
+password=db_password
   
 ## mail.config
->from=메일발송자
->to=메일받을사람
->password=해당 메일stmp password
+>
+from=메일발송자
+to=메일받을사람
+password=해당 메일stmp password
