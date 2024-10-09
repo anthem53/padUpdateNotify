@@ -11,12 +11,15 @@ python 3.10
 mysql
 
 # 라이브러리
-schedule
-selenium
-webdriver_manager
-pymysql
+- schedule
+- selenium
+- webdriver_manager
+- pymysql
 
+라이브러리 다운로드 코드
+```
 pip install schedule ,selenium ,webdriver_manager,pymysql
+```
 
 # 설정 파일
 db.config , mail.config를 해당 project 내 만들어야함. 
