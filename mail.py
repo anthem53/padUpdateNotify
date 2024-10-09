@@ -1,7 +1,6 @@
 import smtplib
 from email.mime.text import MIMEText
 import crawling_impl
-import db
 
 # Create MimeText element with processded string message.
 def generateMessage(newDatas):
@@ -10,20 +9,9 @@ def generateMessage(newDatas):
     
     # 신규 내용이 있는 경우 
     if len(newDatas) > 0 :
-        db.init_db()
-        
         # 해당 내용을 메일 내용에 추가
         for id, title , date, ori in newDatas:
-            result = result + "%s %s %s\n" %(id, title, date)
-        
-        # 기존 DB를 비우기
-        db.clearData()
-
-        # 새로운 내용을 추가 
-        for id, title , date,ori in newDatas:
-            db.insertData(int(id),title,date,ori)
-
-        db.close()
+            result = result + "%d %s %s\n" %(id, title, date)
     else : 
         result += "새로운 업데이트 내용이 없습니다."
     
