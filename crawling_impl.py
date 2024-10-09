@@ -23,9 +23,8 @@ def crawling (isDebug = False):
         temp = e.text.split()
         # 만약 NO에 공지라고 되어있으면 예외처리, 아닌 경우만 result에 넣기
         if(temp[0].isdigit()):
-            int(temp[0])
             tempResult = []
-            tempResult.append(temp[0])
+            tempResult.append(int(temp[0]))
             tempResult.append(" ".join(temp[1:-1]))
             tempResult.append(temp[-1])
             tempResult.append(e.text)
