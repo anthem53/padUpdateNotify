@@ -13,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 import time
+import log
 
 # 전역으로 변수 선언.
 driver = None
@@ -77,6 +78,7 @@ def getElementsByTagName(tagName):
 def waitTag(tagName):
     global driver
     WebDriverWait(driver, timeout=10).until(EC.presence_of_element_located((By.TAG_NAME, tagName)))
+    time.sleep(1)
 
 # 정말 고정된 초 동안 기다림.
 def waitSecond(second):
@@ -86,14 +88,19 @@ def waitSecond(second):
 
 
 if __name__ == "__main__":
+   
+    log.info("start")
     init_driver();
     url = "https://pad.neocyon.com/W/notice/list.aspx"
+    log.info("Move")
     move(url)
     
+    log.info("Waiting")
     WebDriverWait(driver, timeout=10).until(EC.presence_of_element_located((By.TAG_NAME, 'tbody')))
     
-    time.sleep(5)
-    
+   # time.sleep(5)
+    log.info("crawling End")
+    log.info("Result :")
     elements = driver.find_elements(By.TAG_NAME, 'tr')
     for e in elements:
         print(e.text)

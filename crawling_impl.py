@@ -8,7 +8,8 @@ def crawling (isDebug = False):
 
     # 셀레니움 객체로 해당 사이트로 이동및 로딩을 위한 5초 기다림.
     cr.move("https://pad.neocyon.com/W/notice/list.aspx")
-    cr.waitSecond(5)
+    cr.waitTag("tbody")
+    #cr.waitSecond(5)
 
     # 공지 객체들이 tr 태그로 나와서 tr 객체 전부 조사
     elements = cr.getElementsByTagName('tr')
@@ -38,4 +39,4 @@ def crawling (isDebug = False):
     
 
 if __name__ == "__main__":
-    crawling(False)
+    crawling(True)

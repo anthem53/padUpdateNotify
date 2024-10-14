@@ -7,10 +7,10 @@ import db_notify
 import log
 
 
-def notify_job():
+def notify_job(is_debug = False):
     try:
         log.info("메일 발송 이벤트가 시작 되었습니다.")
-        rawDatas = crawling_impl.crawling();
+        rawDatas = crawling_impl.crawling(is_debug);
         newDatas = db_notify.getNewDatas(rawDatas)
         if (len(newDatas) > 0 ):
             db_notify.insertRawDatas(rawDatas)
@@ -35,7 +35,7 @@ def getTaskJobThread():
     return threading.Thread(target=schedule_notify)
 
 if __name__ == '__main__':
-    notify_job()
+    notify_job(True)
     '''
     if len(sys.argv) < 2:
         notify_job();
