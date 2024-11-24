@@ -65,14 +65,12 @@ def getElementByXpath(xpath):
 # 주어진 태그네임에해당하는 모든 요소를 리스트로 반환
 def getElementsByTagName(tagName):
     global driver
-    elements = driver.find_elements(By.TAG_NAME, 'tr')
-    '''
-    elements = driver.find_elements(By.TAG_NAME, 'tr')
-    for e in elements:
-        print(e.text)
-        print()
-    '''
+    elements = driver.find_elements(By.TAG_NAME, tagName)
     return elements
+
+def getDriverPageSource():
+    global driver
+    return driver.page_source
 
 # 해당 시간 기다림.
 def waitTag(tagName):
