@@ -29,6 +29,16 @@ def init_db():
     conn = pymysql.connect (host="127.0.0.1", user=configInfo["id"], password=configInfo["password"],db="padNotify",charset="utf8")
     cur = conn.cursor()
 
+def execute(sql):
+    global conn,cur
+
+    cur.execute(sql)
+    conn.commit()
+
+def fatchall():
+    global conn, cur
+
+    return cur.fetchall()
 
 # Insert Data to notify 
 def insertData(id,title, date, originText):
