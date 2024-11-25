@@ -58,8 +58,6 @@ def checkDup(id):
 
 # clear Notify table. remove all elements in this table.
 def clearData():
-    db.int_db()
     sql = "DELETE FROM notify"
     db.execute(sql)
-    db.close()
 

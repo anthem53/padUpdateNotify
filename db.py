@@ -35,7 +35,7 @@ def execute(sql):
     cur.execute(sql)
     conn.commit()
 
-def fatchall():
+def fetchall():
     global conn, cur
 
     return cur.fetchall()
