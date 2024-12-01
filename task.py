@@ -14,6 +14,7 @@ def notify_job(is_debug = False):
         newDatas = db_notify.getNewDatas(rawDatas)
         if (len(newDatas) > 0 ):
             db_notify.insertRawDatas(rawDatas)
+            logl.info("DB 삽입 완료, 메일 전송 전 ")
             mail.sendEmail(mail.generateMessage(newDatas))
             log.info("메일 발송 이벤트가 완료 되었습니다.")
         else:
