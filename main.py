@@ -2,8 +2,10 @@ import sys
 import task
 import atexit
 import log
+import mail
 
 def endFunction():
+    mail.sendEmail(mail.generateCustomMessage("퍼즐앤드래곤 크롤링 서버가 중료되었습니다."))
     log.info("프로그램이 특정 이유로 종료 되었습니다.");
 
 atexit.register(endFunction)

@@ -11,7 +11,7 @@ def notify_event_job(is_debug = False):
     try:
         log.info("퍼즐앤드래곤 이벤트 크롤링이 시작되었습니다.")
         rawEventDatas = crawling_event.crawling()
-        
+        print(rawEventDatas,sep="\n") 
         #TODO rawEventData와 DB 정보 비교해서 newEventDatas 확인. 
         if (len(newEventDatas) > 0) :
             #TODO 신규 이벤트 존재할 경우, 해당 이벤트가 진행중인지를 기간으로 확인후 진행 중인 경우 mail 항목에 넣기
@@ -41,7 +41,7 @@ def getTaskJobThread():
     return threading.Thread(target=schedule_notify)
 
 if __name__ == '__main__':
-    notify_job(True)
+    notify_event_job(True)
     '''
     if len(sys.argv) < 2:
         notify_job();

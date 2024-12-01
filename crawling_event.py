@@ -14,7 +14,7 @@ DB와 연동해서 해당 항목이 DB에 존재하는지 확인.
 여기서 return 하는 데이터들은 현재 홈페이지에 있는 event들 정보.
 '''
 
-def crawling_event():
+def crawling():
     cr.init_driver()
     cr.move(EVENT_URL)
     cr.waitSecond(3)
@@ -51,7 +51,7 @@ def crawling_event():
                 
         log.info("Page '%s' Done" % (title))
         
-        result.append([title] + findEventPeriod(datetimeList))
+        result.append([title] + [targetUrl]+ findEventPeriod(datetimeList))
     print(result,sep="\n")
     
     return result
@@ -75,5 +75,4 @@ def findEventPeriod(periodInfo):
     return [startDate,endDate]
             
 if __name__ == "__main__":
-    crawling_event()
-    #test()
+    crawling()
