@@ -44,11 +44,10 @@ def crawling_event():
                 title = sentence
             if sentence.find("제목") != -1:
                 title =  sentence.replace("제목","").strip()
-                
-            if sentence.find('기간') != -1:       
-                dateInfo = p.findall(sentence)
-                if len(dateInfo) > 0 :
-                    datetimeList.extend(dateInfo)
+        
+            dateInfo = p.findall(sentence)
+            if len(dateInfo) > 0 :
+                datetimeList.extend(dateInfo)
                 
         log.info("Page '%s' Done" % (title))
         
@@ -66,8 +65,7 @@ def findEventPeriod(periodInfo):
     endDate = datetime.datetime(1970,1,1)
     
     # 시작날 확인
-    for i in range(0,len(periodInfo)):
-        datetimeStr = periodInfo[i]
+    for datetimeStr in periodInfo:
         curDatetime = datetime.datetime.strptime(datetimeStr,DATE_FORMAT)
         if curDatetime < startDate :
             startDate = curDatetime
@@ -76,6 +74,6 @@ def findEventPeriod(periodInfo):
         
     return [startDate,endDate]
             
-    
 if __name__ == "__main__":
     crawling_event()
+    #test()
