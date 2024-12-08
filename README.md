@@ -18,7 +18,7 @@ mysql
 
 라이브러리 다운로드 코드
 ```
-pip install schedule ,selenium ,webdriver_manager,pymysql
+pip install schedule selenium webdriver_manager pymysql
 ```
 
 # 설정 파일
