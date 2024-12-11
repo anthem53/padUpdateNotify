@@ -3,17 +3,36 @@ import threading
 import time
 import mail
 import crawling_event
-import db_notify
+import db_event
 import log
+from datetime import datetime
 
 
 def notify_event_job(is_debug = False):
     try:
         log.info("퍼즐앤드래곤 이벤트 크롤링이 시작되었습니다.")
         rawEventDatas = crawling_event.crawling()
-        
+        print(rawEventDatas,sep="\n") 
+        db.init_db()
         #TODO rawEventData와 DB 정보 비교해서 newEventDatas 확인. 
-        if (len(newEventDatas) > 0) :
+        for (title,link , startDate,endDate) in rawEventDatas:
+            if db_event.isExistEvent(title) == False:
+                if isOpenDate(startDate,endDate):
+                    log.info(convertDatetime2String(startDate))
+                    #DB예 삽입.
+                else:
+                    pass
+
+            else :
+                pass
+                #TODO DB 조회
+                #기간 체크 i
+                # 만약 
+
+
+
+
+        if (1 > 0) :
             #TODO 신규 이벤트 존재할 경우, 해당 이벤트가 진행중인지를 기간으로 확인후 진행 중인 경우 mail 항목에 넣기
             # DB에 넣기
             pass
@@ -22,13 +41,19 @@ def notify_event_job(is_debug = False):
         # DB내 이벤트의 status를 참고. 해당 status가 open이면서  기간이 끝난 경우 한정
         # 해당 status가 close 라면 이벤트 확인에 스킵.
         
-        
+        db.close()
         log.info("퍼즐앤드래곤 이벤트 크롤링 작업이 종료되었습니다.")
     except Exception as e:
+        db.close()
         mail.sendEmail(mail.generateErrorMessage())
         log.error("에러로 인해 메일이 전송되지 않았습니다.")
         log.write(e)
-        
+
+def isOpenDate(startDate,endDate):
+    curDate= datetime.today()
+    return startDate <= curDate and curDate <= endDate
+def convertDateTime2String(datetime):
+    return datetime.strftime("%Y-%m-%d %H:%M:%S")
         
 def schedule_notify():
     log.info("스케줄이 시작되었습니다.")
@@ -41,7 +66,7 @@ def getTaskJobThread():
     return threading.Thread(target=schedule_notify)
 
 if __name__ == '__main__':
-    notify_job(True)
+    notify_event_job(True)
     '''
     if len(sys.argv) < 2:
         notify_job();

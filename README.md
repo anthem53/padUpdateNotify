@@ -6,6 +6,7 @@
 # 환경
 python 3.10
 우분투 22.04
+->  python 3.10 window 10
 
 # 사용 DB 
 mysql
@@ -18,7 +19,7 @@ mysql
 
 라이브러리 다운로드 코드
 ```
-pip install schedule ,selenium ,webdriver_manager,pymysql
+pip install schedule selenium webdriver_manager pymysql
 ```
 
 # 설정 파일
