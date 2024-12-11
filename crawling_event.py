@@ -3,6 +3,7 @@ import log
 from bs4 import BeautifulSoup
 import re
 import datetime
+import db_event
 
 EVENT_URL  = "https://pad.neocyon.com/W/event/list.aspx"
 
@@ -14,7 +15,7 @@ DB와 연동해서 해당 항목이 DB에 존재하는지 확인.
 여기서 return 하는 데이터들은 현재 홈페이지에 있는 event들 정보.
 '''
 
-def crawling():
+def crawling(oldEventNameList, isDebug = False):
     cr.init_driver()
     cr.move(EVENT_URL)
     cr.waitSecond(3)
@@ -22,37 +23,43 @@ def crawling():
     elements = cr.getElementsByTagName("a")
     targetUrls = []
     for e in elements:
-        if ("[이벤트]" in e.text):
-            targetUrls.append(e.get_attribute('href'))
+        if ("[이벤트]" in e.text) :
+            if isDebug :
+                print(e.text)
+            targetUrls.append((e.text.replace("[이벤트]", "").strip(), e.get_attribute('href')))
         
     result = []
-    for targetUrl in targetUrls:
-        log.info("%s page info" % (targetUrl))
-        cr.move(targetUrl)
-        cr.waitSecond(3)
-        soup = BeautifulSoup(cr.getDriverPageSource(),'html.parser')
-        soupStringList = soup.text.split('\n')
-        p = re.compile('[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]')
-        title= ""
-        isFirst = True
-        datetimeList = []
-        for sentence in soupStringList :
-            if sentence == '':
-                continue
-            if isFirst == True:
-                isFirst = False;
-                title = sentence
-            if sentence.find("제목") != -1:
-                title =  sentence.replace("제목","").strip()
-        
-            dateInfo = p.findall(sentence)
-            if len(dateInfo) > 0 :
-                datetimeList.extend(dateInfo)
-                
-        log.info("Page '%s' Done" % (title))
-        
-        result.append([title] + [targetUrl]+ findEventPeriod(datetimeList))
-    print(result,sep="\n")
+    for title, targetUrl in targetUrls:
+        if title not in oldEventNameList:
+            log.info("%s page info" % (targetUrl))
+            cr.move(targetUrl)
+            cr.waitSecond(3)
+            soup = BeautifulSoup(cr.getDriverPageSource(),'html.parser')
+            soupStringList = soup.text.split('\n')
+            p = re.compile('[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]')
+            title= ""
+            isFirst = True
+            datetimeList = []
+            for sentence in soupStringList :
+                if sentence == '':
+                    continue
+                if isFirst == True:
+                    isFirst = False;
+                    title = sentence
+                if sentence.find("제목") != -1:
+                    title =  sentence.replace("제목","").strip()
+            
+                dateInfo = p.findall(sentence)
+                if len(dateInfo) > 0 :
+                    datetimeList.extend(dateInfo)
+                    
+            log.info("Page '%s' Done" % (title))
+            
+            result.append([title] + [targetUrl]+ findEventPeriod(datetimeList))
+        else :
+            result.append([title] + ["None","None","None"] )
+    if isDebug == True:
+        print(result,sep="\n")
     
     return result
                 
@@ -75,4 +82,4 @@ def findEventPeriod(periodInfo):
     return [startDate,endDate]
             
 if __name__ == "__main__":
-    crawling()
+    crawling([],True)

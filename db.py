@@ -26,7 +26,7 @@ def init_db():
             parsed = line.split("=")
             configInfo[parsed[0]] = parsed[1]
 
-    conn = pymysql.connect (host="127.0.0.1", user=configInfo["id"], password=configInfo["password"],db="padNotify",charset="utf8")
+    conn = pymysql.connect (host=configInfo["host"], user=configInfo["id"], password=configInfo["password"],db="padNotify",charset="utf8")
     cur = conn.cursor()
 
 def execute(sql):
