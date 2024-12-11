@@ -6,6 +6,7 @@
 # 환경
 python 3.10
 우분투 22.04
+->  python 3.10 window 10
 
 # 사용 DB 
 mysql
