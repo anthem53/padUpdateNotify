@@ -27,6 +27,7 @@ db.config , mail.config를 해당 project 내 만들어야함.
 
 ## db.config
 ```
+host=db_host
 id=db_id
 password=db_password
 ```
