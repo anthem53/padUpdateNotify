@@ -30,6 +30,8 @@ def crawling(oldEventNameList, isDebug = False):
         
     result = []
     for title, targetUrl in targetUrls:
+        if isDebug == True:
+            print(title)
         if title not in oldEventNameList:
             log.info("%s page info" % (targetUrl))
             cr.move(targetUrl)
@@ -37,18 +39,10 @@ def crawling(oldEventNameList, isDebug = False):
             soup = BeautifulSoup(cr.getDriverPageSource(),'html.parser')
             soupStringList = soup.text.split('\n')
             p = re.compile('[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]')
-            title= ""
-            isFirst = True
             datetimeList = []
             for sentence in soupStringList :
                 if sentence == '':
                     continue
-                if isFirst == True:
-                    isFirst = False;
-                    title = sentence
-                if sentence.find("제목") != -1:
-                    title =  sentence.replace("제목","").strip()
-            
                 dateInfo = p.findall(sentence)
                 if len(dateInfo) > 0 :
                     datetimeList.extend(dateInfo)
@@ -57,7 +51,7 @@ def crawling(oldEventNameList, isDebug = False):
             
             result.append([title] + [targetUrl]+ findEventPeriod(datetimeList))
         else :
-            result.append([title] + ["None","None","None"] )
+            result.append([title] + [None,None,None] )
     if isDebug == True:
         print(result,sep="\n")
     
@@ -68,16 +62,16 @@ def findEventPeriod(periodInfo):
         return [None,None]
     
     DATE_FORMAT = "%Y/%m/%d"    
-    startDate = datetime.datetime(3000,1,1)
-    endDate = datetime.datetime(1970,1,1)
+    startDate = datetime.date(3000,1,1)
+    endDate = datetime.date(1970,1,1)
     
     # 시작날 확인
     for datetimeStr in periodInfo:
-        curDatetime = datetime.datetime.strptime(datetimeStr,DATE_FORMAT)
-        if curDatetime < startDate :
-            startDate = curDatetime
-        if endDate < curDatetime :
-            endDate = curDatetime
+        curDate = datetime.datetime.strptime(datetimeStr,DATE_FORMAT).date()
+        if curDate < startDate :
+            startDate = curDate
+        if endDate < curDate :
+            endDate = curDate
         
     return [startDate,endDate]
             

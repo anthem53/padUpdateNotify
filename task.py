@@ -8,19 +8,20 @@ import log
 
 
 def notify_job(is_debug = False):
+    print
     try:
         log.info("메일 발송 이벤트가 시작 되었습니다.")
         rawDatas = crawling_impl.crawling(is_debug);
         newDatas = db_notify.getNewDatas(rawDatas)
         if (len(newDatas) > 0 ):
             db_notify.insertRawDatas(rawDatas)
-            logl.info("DB 삽입 완료, 메일 전송 전 ")
-            mail.sendEmail(mail.generateMessage(newDatas))
+            log.info("DB 삽입 완료, 메일 전송 전 ")
+            mail.sendEmail('퍼즐앤드래곤 신규 업데이트',mail.generateMessage(newDatas))
             log.info("메일 발송 이벤트가 완료 되었습니다.")
         else:
             log.info("업데이트된 내용이 없어 메일발송하지 않았습니다.")
     except Exception as e:
-        mail.sendEmail(mail.generateErrorMessage())
+        mail.sendEmail('퍼즐앤드래곤 신규 업데이트',mail.generateErrorMessage())
         log.error("에러로 인해 메일이 전송되지 않았습니다.")
         log.write(e)
 

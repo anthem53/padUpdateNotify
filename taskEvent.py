@@ -6,42 +6,66 @@ import crawling_event
 import db_event
 import db 
 import log
-from datetime import datetime
+from datetime import datetime, date
+import datetime
 
 
 def notify_event_job(is_debug = False):
+    START = 0
+    CLOSE = 1
+    NEED = 2
     try:
         log.info("퍼즐앤드래곤 이벤트 크롤링이 시작되었습니다.")
         db.init_db()
-        rawEventDatas = crawling_event.crawling(db_event.selectEventNameList())
-        if (is_debug):
-            print(rawEventDatas,sep="\n") 
-        #TODO rawEventData와 DB 정보 비교해서 newEventDatas 확인. 
-        for (title,link , startDate,endDate) in rawEventDatas:
-            # link is none then this event is new.
-            if link != None :
-                if startDate != None and endDate != None and isOpenDate(startDate,endDate):
-                    log.info(convertDatetime2String(startDate))
-                    db_event.insert((title,name,startDate,endDate))
-                else:
-                    
-                    pass
-
-            # else mean this event is exist in DB
-            else :
-                pass
-                #TODO DB 조회
-                #기간 체크 i
-                # 만약 
-
-        if (1 > 0) :
-            #TODO 신규 이벤트 존재할 경우, 해당 이벤트가 진행중인지를 기간으로 확인후 진행 중인 경우 mail 항목에 넣기
-            # DB에 넣기
-            pass
         
-        #TODO  DB 조회후 종료된 이벤트 확인
-        # DB내 이벤트의 status를 참고. 해당 status가 open이면서  기간이 끝난 경우 한정
-        # 해당 status가 close 라면 이벤트 확인에 스킵.
+        # 기존 DB에 있는 event의 이름 목록 조회
+        oldEventDateNameList = db_event.selectEventNameList()
+
+        # event 크롤링 TODO crawedEventData의 date 타입을 datetime에서 date로 수정
+        crawledEventList = crawling_event.crawling(oldEventDateNameList) 
+        #crawledEventList = [['서비스 12주년 기념 스페셜 세트 판매!', 'https://pad.neocyon.com/W/event/view.aspx?id=2235', datetime.date(2024, 12, 16), datetime.date(2025, 1, 12)], ['대감사제! 앙케이트 슈퍼 갓 페스티벌 개최 결정!', 'None', 'None', 'None'], ['레어 에그 ~트리 카니발~', 'None', 'None', 'None'], ['그라비티 네오싸이언 설문조사', 'https://pad.neocyon.com/Poll.aspx?PollGroupSeq=206', None, None], ['겅호 콜라보 외전 캐릭터가 기간한정으로 등장!', 'None', 'None', 'None'], ['서비스 12주년 기념 이벤트!', 'None', 'None', 'None'], ['퍼즐앤드래곤 대감사제', 'None', 'None', 'None'], ['[마법석 100개+대감사제 세트 [12월]] 판매!', 'None', 'None', 'None'], ['[대감사제 스페셜 세트] 판매!', 'None', 'None', 'None']]
+    
+        crawledEventNameList = [elem[0] for elem  in crawledEventList]
+
+        # 만약 새로운 놈들이라면 일단 DB 넣기
+        for (name,link, startDate, endDate) in crawledEventList:
+            print((name,link, startDate, endDate))
+            if link != None:
+                db_event.insertEvent((name,link,startDate,endDate,"0"))
+                
+
+        # 업데이트된 DB 조회
+        eventDataNameList = db_event.selectEventList()
+
+        #결과 반영할 것 
+        result = [[],[],[]]
+
+        # 돌면서 이벤트 검증.
+        for (name,link,status ,startDate, endDate,updateDate) in eventDataNameList:
+            # 날짜 등록 x 시 result에 넣기. 그래도 status는 1로 변경
+            if startDate == None or endDate == None:
+                result[NEED].append((name,link))
+                db_event.updateEventStatus(name,"1")
+            # open인데 status = 1인 경우는 새로 추가된 경우. 따라서 넣기
+            elif isOpenDate(startDate,endDate) == True and status == '0':
+                result[START].append((name,link))
+                db_event.updateEventStatus(name,"1")
+            # status는 1인데 close는 이제 이벤트가 끝난거. 역시 통보
+            elif isOpenDate(startDate,endDate) == False and status == '1':
+                result[CLOSE].append((name,link))
+                db_event.updateEventStatus(name,"0")
+            else :
+                print("NoResult")
+                pass
+            
+            if name not in crawledEventNameList:
+                db_event.deleteEvent(name)
+                
+        if len(result[START]) > 0 or len(result[CLOSE]) > 0 or len(result[NEED]) > 0:
+            print("send email!")
+            print(result)
+            #mail.sendEmail(mail.generateEventMail(result),"퍼즐앤드래곤 이벤트 일정 변경 알림")
+         
         
         db.close()
         log.info("퍼즐앤드래곤 이벤트 크롤링 작업이 종료되었습니다.")
@@ -51,12 +75,13 @@ def notify_event_job(is_debug = False):
         log.error("에러로 인해 메일이 전송되지 않았습니다.")
         log.write(e)
 
+
 def isOpenDate(startDate,endDate):
     if (startDate == None or endDate == None):
         return False
-    
-    curDate= datetime.today()
+    curDate= date.today()
     return startDate <= curDate and curDate <= endDate
+
 def convertDateTime2String(datetime):
     return datetime.strftime("%Y-%m-%d %H:%M:%S")
         

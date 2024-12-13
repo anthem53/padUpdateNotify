@@ -19,6 +19,10 @@ def generateMessage(newDatas):
     
     return MIMEText(result)
 
+def  generateEventMessage(eventResults):
+    result = "이벤트 변경 내용\n\n"
+
+    return MIMEText(result)
 # send Error message
 def generateErrorMessage():
     return MIMEText("에러로 인해 업데이트 체크 시스템이 종료되었습니다. 재기동 해주십시오.")
@@ -29,7 +33,7 @@ def generateCustomMessage(content:str):
     return MIMEText(content)
 
 # message is MIMEText type
-def sendEmail(message:MIMEText):
+def sendEmail(title,message:MIMEText):
     configInfo = dict()
 
     f= open("mail.config",'r')

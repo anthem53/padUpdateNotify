@@ -29,11 +29,21 @@ def init_db():
     conn = pymysql.connect (host=configInfo["host"], user=configInfo["id"], password=configInfo["password"],db="padNotify",charset="utf8")
     cur = conn.cursor()
 
-def execute(sql):
+
+    
+def execute(sql,values=None):
     global conn,cur
 
-    cur.execute(sql)
-    conn.commit()
+    try :
+        if (values == None):
+            cur.execute(sql)
+        else:
+            cur.execute(sql,values)
+        conn.commit()
+    except Exception as e:
+        print("DB.execute  Exception")
+        print(e)
+    
 
 def fetchall():
     global conn, cur

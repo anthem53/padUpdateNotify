@@ -12,19 +12,21 @@ def isExistEvent(eventName):
     return len(result) > 0
 
 '''
-Event(name, link ,startDate, endDate)
+Event(name, link ,startDate, endDate, status)
 '''
 def insertEvent(event):
 
     name = event[0]
     link = event[1]
-    status = "1"
+    status = event[4]
     startDate = event[2]
     endDate = event[3]
     updateDate= getTimeFormat(datetime.today())
 
-    sql = "INSERT INTO event (name, link, status, start_date, end_date, update_date) values ('%s','%s','%s','%s','%s','%s')" % (name, link, status, startDate,endDate,updateDate)
-    db.execute(sql)
+    sql = "INSERT INTO event (name, link, status, start_date, end_date, update_date) values (%s,%s,%s,%s,%s,%s)" 
+    
+    db.execute(sql,(name, link, status, startDate,endDate,updateDate))
+        
 
 '''
  단건 조회
@@ -43,19 +45,16 @@ def selectEventList():
     sql = "SELECT * FROM event"
     db.execute(sql)
     result = db.fetchall()
-    print(result) 
+    #print(result) 
     return result   
 '''
 다건조회 Only name
 '''
 def selectEventNameList():
-    sql = "SELECT * FROM event"
+    sql = "SELECT name FROM event"
     db.execute(sql)
-    executeResult = db.fetchall()
-    result = []
-    for elem in executeResult:
-        result.append(elem[0])
-    return result  
+    result = db.fetchall()
+    return [elem[0] for elem in result]
 
 '''
 오픈중인 이벤트?
@@ -89,7 +88,7 @@ if __name__ == "__main__":
     
     #print(selectEventList(),sep='\n')
     
-    print(selectEventNameList())
+    insertEvent(("testname","https://www.naver.com",None,None,"0"))
 
     
     db.close()
