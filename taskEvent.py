@@ -54,17 +54,23 @@ def notify_event_job(is_debug = False):
             elif isOpenDate(startDate,endDate) == False and status == '1':
                 result[CLOSE].append((name,link))
                 db_event.updateEventStatus(name,"0")
+            elif status == "0":
+                pass
+                #print("TEST")
+                #result[CLOSE].append((name,link))
             else :
-                print("NoResult")
+                #print("NoResult")
                 pass
             
             if name not in crawledEventNameList:
                 db_event.deleteEvent(name)
                 
         if len(result[START]) > 0 or len(result[CLOSE]) > 0 or len(result[NEED]) > 0:
-            print("send email!")
-            print(result)
-            #mail.sendEmail(mail.generateEventMail(result),"퍼즐앤드래곤 이벤트 일정 변경 알림")
+            log.info("변동된 이벤트가 있어 메일 발송을 시작하였습니다.")
+            mail.sendEmail(mail.generateEventMessage(result),"퍼즐앤드래곤 이벤트 일정 변경 알림")
+            log.info("변동된 이벤트에 대한 메일 발송 완료하였습니다.")
+        else : 
+            log.info("변동된 이벤트가 없습니다.")
          
         
         db.close()

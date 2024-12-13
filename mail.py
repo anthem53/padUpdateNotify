@@ -19,10 +19,33 @@ def generateMessage(newDatas):
     
     return MIMEText(result)
 
-def  generateEventMessage(eventResults):
-    result = "이벤트 변경 내용\n\n"
+def  generateEventMessage(result):
+    msg = "일정이 변경된 이벤트 리스트\n\n\n"
 
-    return MIMEText(result)
+    START = 0
+    CLOSE = 1
+    NEED = 2
+
+    if len(result[START]) > 0 :
+        msg += "● 새로 등록된 이벤트리스트\n"
+        for name, link in result[START]:
+            msg += "\t - %s : %s\n" % (name,link)
+            
+            
+    if len(result[CLOSE]) > 0 :
+        msg += "● 종료된 이벤트리스트\n"
+        for name, link in result[CLOSE]:
+            msg += "\t - %s : %s\n" % (name,link)
+            
+    if len(result[NEED]) > 0 :
+        msg += "● 입력 필요한 이벤트리스트\n"
+        for name, link in result[NEED]:
+            msg += "\t - %s : %s\n" % (name,link)
+            
+        msg += "\n\n\n 퍼즐앤드래곤 공식 홈페이지 이벤트 사이트 : https://pad.neocyon.com/W/event/list.aspx"
+            
+    return MIMEText(msg)
+
 # send Error message
 def generateErrorMessage():
     return MIMEText("에러로 인해 업데이트 체크 시스템이 종료되었습니다. 재기동 해주십시오.")
@@ -33,7 +56,7 @@ def generateCustomMessage(content:str):
     return MIMEText(content)
 
 # message is MIMEText type
-def sendEmail(title,message:MIMEText):
+def sendEmail(message:MIMEText,title):
     configInfo = dict()
 
     f= open("mail.config",'r')
@@ -62,7 +85,7 @@ def sendEmail(title,message:MIMEText):
     #내용을 입력하는 MIMEText => 다른 라이브러리 사용 가능
     #msg = MIMEText('내용 : 퍼즐앤드래곤 신규 업데이트')
     msg = message
-    msg['Subject'] = '퍼즐앤드래곤 신규 업데이트'
+    msg['Subject'] = title
 
     #이메일을 보내기 위한 설정(Cc도 가능)
     smtp.sendmail(configInfo["from"], configInfo['to'], msg.as_string())
@@ -74,4 +97,4 @@ def sendEmail(title,message:MIMEText):
 
 
 if __name__ == "__main__":
-    sendEmail(generateCustomMessage("커스텀 테스트"))
+    sendEmail(generateCustomMessage('일정이 변경된 이벤트 리스트\n\n\n종료된 이벤트리스트\n서비스 12주년 기념 스페셜 세트 판매! : https://pad.neocyon.com/W/event/view.aspx?id=2235\n'),"퍼드 이벤트 변동")
