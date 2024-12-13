@@ -1,5 +1,6 @@
 import sys
 import task
+import taskEvent
 import atexit
 import log
 import mail
@@ -16,4 +17,7 @@ if __name__ == '__main__':
     else :
         notify_thread = task.getTaskJobThread()
         notify_thread.start()
+        
+        eventThread = task.getTaskJobThread()
+        eventThread.start()
 

@@ -6,8 +6,8 @@ import crawling_event
 import db_event
 import db 
 import log
-from datetime import datetime, date
-import datetime
+from datetime import date
+import sys
 
 
 def notify_event_job(is_debug = False):
@@ -91,22 +91,20 @@ def isOpenDate(startDate,endDate):
 def convertDateTime2String(datetime):
     return datetime.strftime("%Y-%m-%d %H:%M:%S")
         
-def schedule_notify():
+def schedule_event_notify():
     log.info("스케줄이 시작되었습니다.")
-    schedule.every().day.at("19:00").do(notify_event_job)
+    schedule.every().day.at("18:30").do(notify_event_job)
     while True:
         schedule.run_pending()
         time.sleep(1)
 
 def getTaskJobThread():
-    return threading.Thread(target=schedule_notify)
+    return threading.Thread(target=schedule_event_notify)
 
 if __name__ == '__main__':
-    notify_event_job(True)
-    '''
     if len(sys.argv) < 2:
-        notify_job();
+        notify_event_job();
     else :
-        notify_thread = threading.Thread(target=schedule_notify)
+        notify_thread = threading.Thread(target=schedule_event_notify)
         notify_thread.start()
-    '''
+    
