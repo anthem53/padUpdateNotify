@@ -78,7 +78,7 @@ def notify_event_job(is_debug = False):
         log.info("퍼즐앤드래곤 이벤트 크롤링 작업이 종료되었습니다.")
     except Exception as e:
         db.close()
-        #mail.sendEmail(mail.generateErrorMessage())
+        mail.sendEmail(mail.generateErrorMessage(),"퍼드 감지 서비스 이벤트 에러 발생")
         log.error("에러로 인해 메일이 전송되지 않았습니다.")
         log.write(e)
 
