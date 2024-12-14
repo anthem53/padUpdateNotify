@@ -19,7 +19,7 @@ mysql
 
 라이브러리 다운로드 코드
 ```
-pip install schedule selenium webdriver_manager pymysql beautifulsoup4
+pip install schedule selenium webdriver_manager pymysql beautifulsoup4 cryptography
 ```
 
 # 설정 파일
