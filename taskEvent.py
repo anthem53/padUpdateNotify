@@ -92,7 +92,7 @@ def convertDateTime2String(datetime):
     return datetime.strftime("%Y-%m-%d %H:%M:%S")
         
 def schedule_event_notify():
-    log.info("스케줄이 시작되었습니다.")
+    log.info("이벤트 크롤링 스케줄이 시작되었습니다.")
     schedule.every().day.at("18:30").do(notify_event_job)
     while True:
         schedule.run_pending()

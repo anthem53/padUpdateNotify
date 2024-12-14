@@ -14,10 +14,11 @@ atexit.register(endFunction)
 if __name__ == '__main__':
     if len(sys.argv) < 2: 
         task.notify_job();
+        taskEvent.notify_event_job()
     else :
         notify_thread = task.getTaskJobThread()
         notify_thread.start()
         
-        eventThread = task.getTaskJobThread()
+        eventThread = taskEvent.getTaskJobThread()
         eventThread.start()
 
