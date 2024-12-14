@@ -29,7 +29,8 @@ def notify_event_job(is_debug = False):
 
         # 만약 새로운 놈들이라면 일단 DB 넣기
         for (name,link, startDate, endDate) in crawledEventList:
-            print((name,link, startDate, endDate))
+            if is_debug == True:
+                print((name,link, startDate, endDate))
             if link != None:
                 db_event.insertEvent((name,link,startDate,endDate,"0"))
                 
