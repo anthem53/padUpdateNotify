@@ -31,7 +31,7 @@ host=db_host
 id=db_id
 password=db_password
 ```
-만약 같은 서버 내 돌아간다면 db_host 자리에 localhost ㄱㄱ
+만약 같은 서버 내 돌아간다면 db_host 자리에 localhost나 127.0.0.1 입력
   
 ## mail.config
 ```
