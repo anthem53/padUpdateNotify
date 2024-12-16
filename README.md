@@ -13,18 +13,13 @@ python 3.10
 mysql
 
 # 라이브러리
-- schedule
-- selenium
-- webdriver_manager
-- pymysql
-
 라이브러리 다운로드 코드
 ```
 pip install schedule selenium webdriver_manager pymysql beautifulsoup4 cryptography
 ```
 
 # 설정 파일
-db.config , mail.config를 해당 project 내 만들어야함. 
+db.config , mail.config를 해당 project 내 생성해야함.
 
 ## db.config
 ```
@@ -36,7 +31,10 @@ password=db_password
   
 ## mail.config
 ```
-from=메일발송자
-to=메일받을사람
+from=메일발송주체가 될 이메일 주소
+to=메일 받을 이메일 주소
 password=해당 메일stmp password
 ```
+
+현 시점 한 서버당 하나의 유저에게 mail보내도록 되어있음. 이유는 메일서버가 개인 email의 stmp 서버라 구글 정책이 적용되는데 메일 전송 최대 제한이 존재하여 이리 설정.
+
