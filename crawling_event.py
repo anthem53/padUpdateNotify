@@ -44,7 +44,7 @@ def crawling(oldEventNameList, isDebug = False):
                 if sentence == '':
                     continue
                 dateInfo = p.findall(sentence)
-                if len(dateInfo) > 0 :
+                if len(dateInfo) >= 2 :
                     datetimeList.extend(dateInfo)
                     
             log.info("Page '%s' Done" % (title))
@@ -53,7 +53,8 @@ def crawling(oldEventNameList, isDebug = False):
         else :
             result.append([title] + [None,None,None] )
     if isDebug == True:
-        print(result,sep="\n")
+        for elem in result:
+            print(elem)
     
     return result
                 
@@ -76,4 +77,4 @@ def findEventPeriod(periodInfo):
     return [startDate,endDate]
             
 if __name__ == "__main__":
-    crawling([],True)
+    result = crawling([],True)
