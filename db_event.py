@@ -4,10 +4,9 @@ from datetime import datetime
 
 
 def isExistEvent(eventName):
-
-    sql = "SELECT 1 FROM event WHERE name = '%s'" % (eventName)
-    db.execute(sql)
-    result = db.fetchall(i)
+    sql = "SELECT 1 FROM event WHERE name = '%s'"
+    db.execute(sql,(eventName))
+    result = db.fetchall()
 
     return len(result) > 0
 
@@ -32,10 +31,9 @@ def insertEvent(event):
  단건 조회
 '''
 def selectEvent(name):
-    sql = "SELECT * FROM event WHERE name = '%s'" % (name)
-    db.execute(sql)
+    sql = "SELECT * FROM event WHERE name = %s" 
+    db.execute(sql,(name))
     result = db.fetchall()
-    print(result) 
     return result   
 
 '''
@@ -45,7 +43,6 @@ def selectEventList():
     sql = "SELECT * FROM event"
     db.execute(sql)
     result = db.fetchall()
-    #print(result) 
     return result   
 '''
 다건조회 Only name
@@ -60,18 +57,21 @@ def selectEventNameList():
 오픈중인 이벤트?
 '''
 def isOpenEvent(name,startDate,endDate):
-    sql = "SELECT 1 FROM event WHERE name = '%s' AND startDate >= '%s' AND endDate <='%s'" % (eventName,startDate, endDate)
+    sql = "SELECT 1 FROM event WHERE name = '%s' AND startDate >= '%s' AND endDate <='%s'" % (name,startDate, endDate)
     db.execute(sql)
-    result = db.fetchall(i)
-
+    result = db.fetchall()
     return len(result) > 0
-    
 
+'''
+이벤트 status 수정
+'''
 def updateEventStatus(name, status):
-    
     sql = "UPDATE event SET status = '%s' WHERE name = '%s'" % (str(status), name)
     db.execute(sql)
     
+'''
+이벤트 삭제
+'''
 def deleteEvent(name):
     sql = "DELETE FROM event WHERE name = '%s'" %(name)
     db.execute(sql)

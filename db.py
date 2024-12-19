@@ -1,19 +1,14 @@
 import pymysql
-
+import log
 
 # Global DB variable
 conn = None;
 cur = None
 
-
-#cur.execute("INSERT INTO  notify VALUES (1,'TESTTitle','2000-01-01','origin text')")
-
-#conn.commit()
-
-
 # Init db variable, conn and cur
 def init_db():
     global conn, cur
+    log.currentTime()
     configInfo = dict()
 
     f= open("db.config",'r')
@@ -29,11 +24,8 @@ def init_db():
     conn = pymysql.connect (host=configInfo["host"], user=configInfo["id"], password=configInfo["password"],db="padNotify",charset="utf8")
     cur = conn.cursor()
 
-
-    
 def execute(sql,values=None):
     global conn,cur
-
     try :
         if (values == None):
             cur.execute(sql)
@@ -47,13 +39,13 @@ def execute(sql,values=None):
 
 def fetchall():
     global conn, cur
-
     return cur.fetchall()
 
 
 # close connection.
 def close():
     global conn, cur
+    log.info("DB connection이 종료됩니다.")
     cur.close()
     conn.close()
 

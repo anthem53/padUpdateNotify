@@ -16,6 +16,7 @@ def notify_job(is_debug = False):
         rawDatas = crawling_impl.crawling(is_debug);
         newDatas = db_notify.getNewDatas(rawDatas)
         if (len(newDatas) > 0 ):
+            db_notify.clearData()
             db_notify.insertRawDatas(rawDatas)
             log.info("DB 삽입 완료, 메일 전송 전 ")
             mail.sendEmail(mail.generateMessage(newDatas),'퍼즐앤드래곤 신규 업데이트')
@@ -24,10 +25,10 @@ def notify_job(is_debug = False):
             log.info("업데이트된 내용이 없어 메일발송하지 않았습니다.")
         db.close()
     except Exception as e:
-        db.close()
         mail.sendEmail(mail.generateErrorMessage(),"퍼즐앤드래곤 업데이트 감지 시스템 에러 발생")
         log.error("에러로 인해 메일이 전송되지 않았습니다.")
         log.write(e)
+        db.close()
 
 
 def schedule_notify():

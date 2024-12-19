@@ -18,7 +18,6 @@ def getNewDatas(rawDatas):
 def insertRawDatas(rawDatas):
     log.info("Start Inserting Crawled data to DB")    
     
-    clearData()
     for id, title, data, originText in rawDatas:
         insertData(id,title,data,originText)
 
@@ -49,6 +48,7 @@ def isExistNotify(id):
 
 # clear Notify table. remove all elements in this table.
 def clearData():
+    log.info("Delete All notify Data")
     sql = "DELETE FROM notify"
     db.execute(sql)
 
