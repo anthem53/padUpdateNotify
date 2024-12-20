@@ -33,6 +33,7 @@ def notify_job(is_debug = False):
 def schedule_notify():
     log.info("공지 크롤링 스케줄이 시작되었습니다.")
     schedule.every().day.at("18:00").do(notify_job)
+    #schedule.every(1).miniutes.do(notify_job)
     while True:
         schedule.run_pending()
         time.sleep(1)

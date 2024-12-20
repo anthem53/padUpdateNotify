@@ -97,6 +97,7 @@ def convertDateTime2String(datetime):
 def schedule_event_notify():
     log.info("이벤트 크롤링 스케줄이 시작되었습니다.")
     schedule.every().day.at("18:30").do(notify_event_job)
+    #schedule.every(1).minutes.do(notify_event_job)
     while True:
         schedule.run_pending()
         time.sleep(1)
@@ -108,6 +109,6 @@ if __name__ == '__main__':
     if len(sys.argv) < 2:
         notify_event_job();
     else :
-        notify_thread = threading.Thread(target=schedule_event_notify)
+        notify_thread = getTaskJobThread()
         notify_thread.start()
     
