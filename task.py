@@ -9,7 +9,6 @@ import log
 
 
 def notify_job(is_debug = False):
-    print
     try:
         log.info("메일 발송 이벤트가 시작 되었습니다.")
         db.init_db()
@@ -42,7 +41,9 @@ def getTaskJobThread():
     return threading.Thread(target=schedule_notify)
 
 if __name__ == '__main__':
-    notify_job(True)
+    curThread = getTaskJobThread()
+    curThread.start()
+    log.info("Job size : " + str(len(schedule.jobs)))
     '''
     if len(sys.argv) < 2:
         notify_job();

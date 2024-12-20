@@ -1,6 +1,7 @@
 import db
 import log
 
+
 # 중복 되지 않은 항목만 추출
 def getNewDatas(rawDatas):
 
@@ -52,3 +53,11 @@ def clearData():
     sql = "DELETE FROM notify"
     db.execute(sql)
 
+
+import crawling_impl
+if __name__ == "__main__":
+    db.init_db()
+    rawDatas = crawling_impl.crawling(True);
+    newDatas = getNewDatas(rawDatas)
+    log.write(newDatas)
+    db.close()
