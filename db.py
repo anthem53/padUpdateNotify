@@ -33,8 +33,8 @@ def execute(sql,values=None):
             cur.execute(sql,values)
         conn.commit()
     except Exception as e:
-        print("DB.execute  Exception")
-        print(e)
+        log.info("DB.execute  Exception")
+        log.write(e)
     
 
 def fetchall():
@@ -46,9 +46,12 @@ def fetchall():
 def close():
     global conn, cur
     log.info("DB connection이 종료됩니다.")
-    cur.close()
-    conn.close()
-
+    try :
+        cur.close()
+        conn.close()
+    except Exception as e:
+        log.info("DB Connection이 이미 종료 되었습니다.")
+        log.write(e)
 
 if __name__ == "__main__":
     init_db()

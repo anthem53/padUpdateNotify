@@ -57,7 +57,6 @@ def clearData():
 import crawling_impl
 if __name__ == "__main__":
     db.init_db()
-    rawDatas = crawling_impl.crawling(True);
-    newDatas = getNewDatas(rawDatas)
-    log.write(newDatas)
+    
+    db.close()
     db.close()
