@@ -6,7 +6,7 @@ import crawling_impl
 import db_notify
 import db
 import log
-
+import sys
 
 def notify_job(is_debug = False):
     try:
@@ -24,7 +24,7 @@ def notify_job(is_debug = False):
             log.info("업데이트된 내용이 없어 메일발송하지 않았습니다.")
         db.close()
     except Exception as e:
-        mail.sendEmail(mail.generateErrorMessage(),"퍼즐앤드래곤 업데이트 감지 시스템 에러 발생")
+        mail.sendEmail(mail.generateErrorMessageWithText(str(e)),"퍼즐앤드래곤 업데이트 감지 시스템 에러 발생")
         log.error("에러로 인해 메일이 전송되지 않았습니다.")
         log.write(e)
         db.close()
@@ -42,13 +42,10 @@ def getTaskJobThread():
     return threading.Thread(target=schedule_notify)
 
 if __name__ == '__main__':
-    curThread = getTaskJobThread()
-    curThread.start()
-    log.info("Job size : " + str(len(schedule.jobs)))
-    '''
+   
     if len(sys.argv) < 2:
         notify_job();
     else :
         notify_thread = threading.Thread(target=schedule_notify)
         notify_thread.start()
-    '''
+    

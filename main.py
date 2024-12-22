@@ -11,8 +11,6 @@ def endFunction():
     mail.sendEmail(mail.generateCustomMessage("퍼즐앤드래곤 크롤링 서버가 종료되었습니다."),"퍼즐앤드래곤 크롤링 종료")
     log.info("프로그램이 특정 이유로 종료 되었습니다.");
 
-atexit.register(endFunction)
-
 if __name__ == '__main__':
     try :
         statusTest.execute()
@@ -20,8 +18,9 @@ if __name__ == '__main__':
             task.notify_job();
             taskEvent.notify_event_job()
         else :
-            notify_thread = task.getTaskJobThread()
-            notify_thread.start()
+            atexit.register(endFunction)
+            notifyThread = task.getTaskJobThread()
+            notifyThread.start()
             
             eventThread = taskEvent.getTaskJobThread()
             eventThread.start()

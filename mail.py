@@ -46,6 +46,14 @@ def  generateEventMessage(result):
             
     return MIMEText(msg)
 
+
+def generateErrorMessageWithText(errorText):
+    content = "에러로 인해 업데이트 체크 시스템이 종료되었습니다. 재기동 해주십시오.\n\n- 에러 내용\n\n"
+    
+    content += str(errorText)
+    
+    return MIMEText(content)
+
 # send Error message
 def generateErrorMessage():
     return MIMEText("에러로 인해 업데이트 체크 시스템이 종료되었습니다. 재기동 해주십시오.")
