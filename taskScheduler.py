@@ -21,7 +21,6 @@ def scheduleStart():
         log.info(name + " 스케줄이 시작되었습니다.")
         schedule.every().day.at("18:00").do(job)
         #schedule.every(1).minutes.do(job)
-    print("test")
     while True:
         schedule.run_pending()
         time.sleep(1)
