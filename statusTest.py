@@ -17,8 +17,8 @@ def execute():
 def dbTest():
     log.info("DB 연결 테스트 시작 합니다.")
     try :
-        db.init_db()
-        db.close()
+        db.init_db("test")
+        db.close("test")
         log.info("DB 연결이 정상적입니다.")
     except Exception as e :
         log.error("DB가 연결 실패 하였습니다.")

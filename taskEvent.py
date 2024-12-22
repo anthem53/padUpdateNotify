@@ -16,7 +16,7 @@ def notify_event_job(is_debug = False):
     NEED = 2
     try:
         log.info("퍼즐앤드래곤 이벤트 크롤링이 시작되었습니다.")
-        db.init_db()
+        db_event.init()
         
         # 기존 DB에 있는 event의 이름 목록 조회
         oldEventDateNameList = db_event.selectEventNameList()
@@ -76,13 +76,13 @@ def notify_event_job(is_debug = False):
             log.info("변동된 이벤트가 없습니다.")
          
         
-        db.close()
+        db_event.close()
         log.info("퍼즐앤드래곤 이벤트 크롤링 작업이 종료되었습니다.")
     except Exception as e:
         mail.sendEmail(mail.generateErrorMessageWithText(str(e)),"퍼즐앤드래곤 업데이트 감지 시스템 에러 발생")
         log.error("에러로 인해 메일이 전송되지 않았습니다.")
         log.write(e)
-        db.close()
+        db_event.close()
 
 
 def isOpenDate(startDate,endDate):

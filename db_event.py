@@ -2,11 +2,16 @@ import db
 import log
 from datetime import datetime
 
+def init():
+    db.init_db(getConnName())
+    
+def close ():
+    db.close(getConnName())
 
 def isExistEvent(eventName):
     sql = "SELECT 1 FROM event WHERE name = '%s'"
-    db.execute(sql,(eventName))
-    result = db.fetchall()
+    db.execute(getConnName(),sql,(eventName))
+    result = db.fetchall(getConnName())
 
     return len(result) > 0
 
@@ -24,7 +29,7 @@ def insertEvent(event):
 
     sql = "INSERT INTO event (name, link, status, start_date, end_date, update_date) values (%s,%s,%s,%s,%s,%s)" 
     
-    db.execute(sql,(name, link, status, startDate,endDate,updateDate))
+    db.execute(getConnName(),sql,(name, link, status, startDate,endDate,updateDate))
         
 
 '''
@@ -32,8 +37,8 @@ def insertEvent(event):
 '''
 def selectEvent(name):
     sql = "SELECT * FROM event WHERE name = %s" 
-    db.execute(sql,(name))
-    result = db.fetchall()
+    db.execute(getConnName(),sql,(name))
+    result = db.fetchall(getConnName())
     return result   
 
 '''
@@ -41,16 +46,16 @@ def selectEvent(name):
 '''
 def selectEventList():
     sql = "SELECT * FROM event"
-    db.execute(sql)
-    result = db.fetchall()
+    db.execute(getConnName(),sql)
+    result = db.fetchall(getConnName())
     return result   
 '''
 다건조회 Only name
 '''
 def selectEventNameList():
     sql = "SELECT name FROM event"
-    db.execute(sql)
-    result = db.fetchall()
+    db.execute(getConnName(),sql)
+    result = db.fetchall(getConnName())
     return [elem[0] for elem in result]
 
 '''
@@ -58,8 +63,8 @@ def selectEventNameList():
 '''
 def isOpenEvent(name,startDate,endDate):
     sql = "SELECT 1 FROM event WHERE name = '%s' AND startDate >= '%s' AND endDate <='%s'" % (name,startDate, endDate)
-    db.execute(sql)
-    result = db.fetchall()
+    db.execute(getConnName(),sql)
+    result = db.fetchall(getConnName())
     return len(result) > 0
 
 '''
@@ -67,29 +72,32 @@ def isOpenEvent(name,startDate,endDate):
 '''
 def updateEventStatus(name, status):
     sql = "UPDATE event SET status = '%s' WHERE name = '%s'" % (str(status), name)
-    db.execute(sql)
+    db.execute(getConnName(),sql)
     
 '''
 이벤트 삭제
 '''
 def deleteEvent(name):
     sql = "DELETE FROM event WHERE name = '%s'" %(name)
-    db.execute(sql)
+    db.execute(getConnName(),sql)
 
 def getTimeFormat(targetDatetime):
     return targetDatetime.strftime("%Y-%m-%d")
 
+# 커넥션 이름 획득
+def getConnName():
+    return "Event"
 
 
 if __name__ == "__main__":
-    db.init_db()
+    db.init_db(getConnName())
     
     #insertEvent(("test eventname3","www.naver.com","2024-10-11","2244-12-14"))
     
     #print(selectEventList(),sep='\n')
     
-    insertEvent(("testname","https://www.naver.com",None,None,"0"))
+    #insertEvent(("testname","https://www.naver.com",None,None,"0"))
 
     
-    db.close()
+    db.close(getConnName())
     print("test")

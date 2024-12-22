@@ -1,6 +1,11 @@
 import db
 import log
 
+def init():
+    db.init_db(getConnName())
+    
+def close ():
+    db.close(getConnName())
 
 # 중복 되지 않은 항목만 추출
 def getNewDatas(rawDatas):
@@ -30,7 +35,7 @@ def insertData(id,title, date, originText):
         return False
 
     sql = "INSERT INTO notify (id, title,date,origin) VALUES (%d, '%s', '%s','%s')" %(id, title, date, originText)
-    db.execute(sql)
+    db.execute(getConnName(),sql)
 
     return True
 
@@ -39,8 +44,8 @@ def insertData(id,title, date, originText):
 def isExistNotify(id):
 
     sql = "SELECT 1 FROM notify WHERE id=%d" % (id)
-    db.execute(sql)
-    result = db.fetchall()
+    db.execute(getConnName(),sql)
+    result = db.fetchall(getConnName())
 
     if len(result) > 0 :
         return True
@@ -51,12 +56,14 @@ def isExistNotify(id):
 def clearData():
     log.info("Delete All notify Data")
     sql = "DELETE FROM notify"
-    db.execute(sql)
+    db.execute(getConnName(),sql)
 
+
+def getConnName():
+    return "Notify"
 
 import crawling_impl
 if __name__ == "__main__":
-    db.init_db()
+    db.init_db(getConnName())
     
-    db.close()
-    db.close()
+    db.close(getConnName())

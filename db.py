@@ -1,16 +1,20 @@
 import pymysql
 import log
 
+
 # Global DB variable
-conn = None;
+conn = None
 cur = None
+connMap = dict()
 
 # Init db variable, conn and cur
-def init_db():
-    global conn, cur
-    log.currentTime()
+def init_db(connName):
+    global connMap
+    
+    if (connName in connMap):
+        raise Exception("중복된 커넥션 이름이 존재합니다. Task의 connection 이름을 점검해주십시오.")
+    
     configInfo = dict()
-
     f= open("db.config",'r')
 
     while True:
@@ -23,9 +27,11 @@ def init_db():
 
     conn = pymysql.connect (host=configInfo["host"], user=configInfo["id"], password=configInfo["password"],db="padNotify",charset="utf8")
     cur = conn.cursor()
+    
+    connMap[connName] = (conn,cur)
 
-def execute(sql,values=None):
-    global conn,cur
+def execute(connName,sql,values=None):
+    conn,cur = getConnInfo(connName)
     try :
         if (values == None):
             cur.execute(sql)
@@ -37,23 +43,32 @@ def execute(sql,values=None):
         log.write(e)
     
 
-def fetchall():
-    global conn, cur
+def fetchall(connName):
+    conn,cur = getConnInfo(connName)
     return cur.fetchall()
 
 
 # close connection.
-def close():
-    global conn, cur
+def close(connName):
     log.info("DB connection이 종료됩니다.")
     try :
+        conn,cur = getConnInfo(connName)
         cur.close()
         conn.close()
+        del connMap[connName]
     except Exception as e:
         log.info("DB Connection이 이미 종료 되었습니다.")
         log.write(e)
+        
+def getConnInfo(connName):
+    global connMap
+    if connName in connMap :
+        return connMap[connName]
+    else :
+        raise Exception("해당 커넥션은 초기화되지 않았습니다. "+ connName)
+    
 
 if __name__ == "__main__":
-    init_db()
+    init_db("test")
     #insertData(2,"3","2000-1-1","-")
-    close()
+    close("test")
