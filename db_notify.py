@@ -64,6 +64,6 @@ def getConnName():
 
 import crawling_impl
 if __name__ == "__main__":
-    db.init_db(getConnName())
+    init()
     
     db.close(getConnName())

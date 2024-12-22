@@ -12,7 +12,7 @@ def init_db(connName):
     global connMap
     
     if (connName in connMap):
-        raise Exception("중복된 커넥션 이름이 존재합니다. Task의 connection 이름을 점검해주십시오.")
+        raise Exception("중복된 커넥션 이름이 존재합니다. Task의 connection 이름을 점검해주십시오.  " + connName)
     
     configInfo = dict()
     f= open("db.config",'r')
@@ -50,14 +50,14 @@ def fetchall(connName):
 
 # close connection.
 def close(connName):
-    log.info("DB connection이 종료됩니다.")
+    log.info("DB connection이 종료됩니다. " + connName)
     try :
         conn,cur = getConnInfo(connName)
+        del connMap[connName]
         cur.close()
         conn.close()
-        del connMap[connName]
     except Exception as e:
-        log.info("DB Connection이 이미 종료 되었습니다.")
+        log.info("DB Connection이 이미 종료 되었습니다. " + connName)
         log.write(e)
         
 def getConnInfo(connName):

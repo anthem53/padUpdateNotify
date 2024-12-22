@@ -7,13 +7,6 @@ import db_event
 
 EVENT_URL  = "https://pad.neocyon.com/W/event/list.aspx"
 
-'''
-TODO
-DB와 연동해서 해당 항목이 DB에 존재하는지 확인.
-만약 존재한다면 기간파싱 패스/ 없을 경우에만 기간 파싱 진행하도록 설정.
-
-여기서 return 하는 데이터들은 현재 홈페이지에 있는 event들 정보.
-'''
 
 def crawling(oldEventNameList, isDebug = False):
     cr.init_driver()

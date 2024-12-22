@@ -5,7 +5,7 @@ import atexit
 import log
 import mail
 import statusTest
-import schedule
+import taskScheduler
 
 def endFunction():
     mail.sendEmail(mail.generateCustomMessage("퍼즐앤드래곤 크롤링 서버가 종료되었습니다."),"퍼즐앤드래곤 크롤링 종료")
@@ -19,11 +19,11 @@ if __name__ == '__main__':
             taskEvent.notify_event_job()
         else :
             atexit.register(endFunction)
-            notifyThread = task.getTaskJobThread()
-            notifyThread.start()
+            taskScheduler.setScheduleTask("공지 크롤링",task.notify_job)
+            taskScheduler.setScheduleTask("이벤트 크롤링",taskEvent.notify_event_job)
             
-            eventThread = taskEvent.getTaskJobThread()
-            eventThread.start()
+            schedulerThread = taskScheduler.getScheduler()
+            schedulerThread.start()
     except Exception as e:
         log.error("서비스 설정 테스트 중 에러가 발생하였습니다.")
         log.write(e)

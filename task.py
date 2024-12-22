@@ -10,7 +10,7 @@ import sys
 
 def notify_job(is_debug = False):
     try:
-        log.info("메일 발송 이벤트가 시작 되었습니다.")
+        log.info("공지 메일 발송 이벤트가 시작 되었습니다.")
         db_notify.init()
         rawDatas = crawling_impl.crawling(is_debug);
         newDatas = db_notify.getNewDatas(rawDatas)
@@ -32,8 +32,8 @@ def notify_job(is_debug = False):
 
 def schedule_notify():
     log.info("공지 크롤링 스케줄이 시작되었습니다.")
-    schedule.every().day.at("18:00").do(notify_job)
-    #schedule.every(1).miniutes.do(notify_job)
+    #schedule.every().day.at("18:00").do(notify_job)
+    schedule.every(1).minutes.do(notify_job)
     while True:
         schedule.run_pending()
         time.sleep(1)
