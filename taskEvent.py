@@ -91,6 +91,12 @@ def isOpenDate(startDate,endDate):
     curDate= date.today()
     return startDate <= curDate and curDate <= endDate
 
+def isWillOpen(startDate):
+    if (startDate == None):
+        return False
+    curDate= date.today()
+    return curDate < startDate;
+
 def convertDateTime2String(datetime):
     return datetime.strftime("%Y-%m-%d %H:%M:%S")
         
