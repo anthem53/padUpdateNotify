@@ -40,7 +40,7 @@ if __name__ == '__main__':
                 except KeyboardInterrupt:
                     log.info("KeyboardInterrupt로 모든 작업이 중지 되었습니다.")
                     scheduleWorker.setStatus(False)
-                    break
+                    quit()
                 
     except Exception as e:
         log.error("서비스 설정 테스트 중 에러가 발생하였습니다.")
