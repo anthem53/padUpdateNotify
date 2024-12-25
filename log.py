@@ -18,7 +18,7 @@ def error(content):
     print(currentTime() + currentThread()+ "[ERROR] "  + content)
 
 def write(content):
-    print(currentTime() , currentThread(),content)
+    print(currentTime() , currentThread(), "[WRITE] ",currentThread(),content)
 
 
 if __name__ == "__main__":

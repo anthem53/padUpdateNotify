@@ -74,7 +74,9 @@ def notify_event_job(is_debug = False):
             log.info("변동된 이벤트에 대한 메일 발송 완료하였습니다.")
         else : 
             log.info("변동된 이벤트가 없습니다.")
-         
+            
+        if len(result[NEED]) > 0:
+            writeNeedEvent(result[NEED])
         
         db_event.close()
         log.info("퍼즐앤드래곤 이벤트 크롤링 작업이 종료되었습니다.")
@@ -97,8 +99,12 @@ def isWillOpen(startDate):
     curDate= date.today()
     return curDate < startDate;
 
-def convertDateTime2String(datetime):
-    return datetime.strftime("%Y-%m-%d %H:%M:%S")
+def writeNeedEvent(needList):
+    f = open("needEvent.txt",'w',encoding='utf-8')
+    f.write("크롤링 시간 : "+log.currentTime()+"\n\n")
+    f.write("● 입력 필요한 이벤트리스트\n")
+    for name, link in needList:
+        f.write("\t - %s : %s\n" % (name,link))
         
 def schedule_event_notify():
     log.info("이벤트 크롤링 스케줄이 시작되었습니다.")
@@ -112,6 +118,8 @@ def getTaskJobThread():
     return threading.Thread(target=schedule_event_notify)
 
 if __name__ == '__main__':
+    writeNeedEvent([("test","www.naver.com"),("test2","www.daum.net")])
+    quit()
     if len(sys.argv) < 2:
         notify_event_job();
     else :
