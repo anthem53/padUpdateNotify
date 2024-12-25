@@ -45,10 +45,9 @@ def notify_event_job(is_debug = False):
 
         # 돌면서 이벤트 검증.
         for (name,link,status ,startDate, endDate,updateDate) in eventDataNameList:
-            # 날짜 등록 x 시 result에 넣기. 그래도 status는 1로 변경
+            # 날짜 등록 x 시 result에 넣기. 그래도 status는 0로 유지.
             if startDate == None or endDate == None:
                 result[NEED].append((name,link))
-                db_event.updateEventStatus(name,"1")
             # open인데 status = 1인 경우는 새로 추가된 경우. 따라서 넣기
             elif isOpenDate(startDate,endDate) == True and status == '0':
                 result[START].append((name,link))
