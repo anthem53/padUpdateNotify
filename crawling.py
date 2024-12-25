@@ -27,7 +27,7 @@ def init_driver():
     chrome_options.add_argument("--incognito") #시크릿 모드의 브라우저가 실행됩니다.
     chrome_options.add_argument("--headless") # 디스플레이 없는 환경이라 이거 필수
     chrome_options.add_argument("--no-sandbox") # 이거 없으면 셀레니움에서 경고를 보냄.
-    chrome_options.add_argument("--disable-dev-shm-usage");
+    chrome_options.add_argument("--disable-dev-shm-usage"); #/deb/shm 디렉토리를 사용하지 않음. 이 디렉토리는 공유 메모리를 담당하는 부분이다.
     chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])  # 콘솔로그 출력 안하게
     chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])  # 자동화 제어 메시지 제거
     chrome_options.add_experimental_option("useAutomationExtension", False)  # 자동화 확장기능 비활성화

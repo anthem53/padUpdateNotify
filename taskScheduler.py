@@ -14,6 +14,7 @@ class scheduler (threading.Thread):
         self.taskList = []
         self.status = True
         self.isDebug = isDebug
+        self.name = "Scheduler"
         
     def setScheduleTask(self,name, job,period):
         self.taskList.append((name,job,period))
