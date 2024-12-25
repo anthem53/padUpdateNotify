@@ -36,7 +36,7 @@ def crawling (isDebug = False):
     log.info("Crawling END")
     cr.quit()
     #시작타이틀 제외한 값만 넣기
-    return result[1:]
+    return result
     
 
 if __name__ == "__main__":
