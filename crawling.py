@@ -82,6 +82,10 @@ def waitTag(tagName):
 # 정말 고정된 초 동안 기다림.
 def waitSecond(second):
     time.sleep(second)
+    
+def quit():
+    global driver
+    driver.quit()
 
 #driver.get("http://naver.com")
 

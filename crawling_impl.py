@@ -34,9 +34,11 @@ def crawling (isDebug = False):
             pass
         #print(e.text)
     log.info("Crawling END")
+    cr.quit()
     #시작타이틀 제외한 값만 넣기
     return result[1:]
     
 
 if __name__ == "__main__":
     crawling(True)
+    

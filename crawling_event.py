@@ -12,7 +12,7 @@ def crawling(oldEventNameList, isDebug = False):
     cr.init_driver()
     cr.move(EVENT_URL)
     cr.waitSecond(3)
-    
+    log.info("Event Crawling Start")
     elements = cr.getElementsByTagName("a")
     targetUrls = []
     for e in elements:
@@ -49,6 +49,8 @@ def crawling(oldEventNameList, isDebug = False):
         for elem in result:
             print(elem)
     
+    log.info("Event Crawling End")
+    cr.quit()
     return result
                 
 def findEventPeriod(periodInfo):
