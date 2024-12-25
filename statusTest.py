@@ -29,6 +29,7 @@ def crawlTest():
     log.info("Crawling 연결 테스트 시작 합니다.")
     try :
         crawling.init_driver()
+        crawling.quit()
         log.info("Crawling 연결이 정상적입니다.")
     except Exception as e :
         log.error("Crawling 연결 실패 하였습니다.")
