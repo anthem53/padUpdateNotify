@@ -100,11 +100,25 @@ def isWillOpen(startDate):
     return curDate < startDate;
 
 def writeNeedEvent(needList):
-    f = open("needEvent.txt",'w',encoding='utf-8')
-    f.write("크롤링 시간 : "+log.currentTime()+"\n\n")
-    f.write("● 입력 필요한 이벤트리스트\n")
+    html_text = """
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Page Title</title>
+        </head>
+        <body style="margin-left: 30vw; margin-top:5vw">
+            <h1>%s</h1>\n""" % ("퍼즐앤드래곤 이벤트 크롤링 시간 : "+log.currentTime())
+    
     for name, link in needList:
-        f.write("\t - %s : %s\n" % (name,link))
+        html_text += '''            <div><span>%s : </span>  <a href='%s'>링크</a></div>\n''' % (name,link)
+        
+    html_text += """
+        </body>
+        </html>
+    """
+    f = open("needEvent.html",'w',encoding='utf-8')
+    print(html_text)
+    f.write(html_text)
         
 def schedule_event_notify():
     log.info("이벤트 크롤링 스케줄이 시작되었습니다.")
@@ -118,8 +132,23 @@ def getTaskJobThread():
     return threading.Thread(target=schedule_event_notify)
 
 if __name__ == '__main__':
+    
     writeNeedEvent([("test","www.naver.com"),("test2","www.daum.net")])
+    # f = open('test','w',encoding = 'UTF-8')
+    # f.write('''<!DOCTYPE html>
+    #     <html>
+    #     <head>
+    #         <title>Page Title</title>
+    #     </head>
+    #     <body style="margin-left: 25%%; margin-top: 3%%">
+    #         <h1>크롤링 시간 : [2024-12-25 14:21:43]</h1>
+    #         <div><span>test : </span>  <a href='www.naver.com'>링크</a></div>
+    #         <div><span>test2 : </span>  <a href='www.daum.net'>링크</a></div>
+
+    #     </body>
+    #     </html>''')
     quit()
+    
     if len(sys.argv) < 2:
         notify_event_job();
     else :
