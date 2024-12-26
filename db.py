@@ -68,6 +68,16 @@ def getConnInfo(connName):
         raise Exception("해당 커넥션은 초기화되지 않았습니다. "+ connName)
     
 
+def dbTest():
+    log.info("DB 연결 테스트 시작 합니다.")
+    try :
+        init_db("test")
+        close("test")
+        log.info("DB 연결이 정상적입니다.")
+    except Exception as e :
+        log.error("DB가 연결 실패 하였습니다.")
+        raise e
+
 if __name__ == "__main__":
     init_db("test")
     #insertData(2,"3","2000-1-1","-")

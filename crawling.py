@@ -79,6 +79,17 @@ def waitSecond(driver, second):
     
 def quit(driver):
     driver.quit()
+    
+def crawlTest():
+    log.info("Crawling 연결 테스트 시작 합니다.")
+    try :
+        test_driver = init_driver()
+        quit(test_driver)
+        log.info("Crawling 연결이 정상적입니다.")
+    except Exception as e :
+        log.error("Crawling 연결 실패 하였습니다.")
+        raise e   
+
 
 #driver.get("http://naver.com")
 

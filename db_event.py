@@ -19,19 +19,19 @@ def isExistEvent(eventName):
 Event(name, link ,startDate, endDate, status)
 '''
 def insertEvent(event):
-
+    
     name = event[0]
     link = event[1]
     status = event[4]
     startDate = event[2]
     endDate = event[3]
     updateDate= getTimeFormat(datetime.today())
-
+    log.info("Insert event : " + name)
+    
     sql = "INSERT INTO event (name, link, status, start_date, end_date, update_date) values (%s,%s,%s,%s,%s,%s)" 
     
     db.execute(getConnName(),sql,(name, link, status, startDate,endDate,updateDate))
         
-
 '''
  단건 조회
 '''
@@ -78,6 +78,7 @@ def updateEventStatus(name, status):
 이벤트 삭제
 '''
 def deleteEvent(name):
+    log.info("delete event [%s]" % (name))
     sql = "DELETE FROM event WHERE name = '%s'" %(name)
     db.execute(getConnName(),sql)
 
