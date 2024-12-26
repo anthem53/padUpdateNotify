@@ -4,15 +4,15 @@ import log
 def crawling (isDebug = False):
     log.info("Crawling START")
     #크롤링을 위한 셀레니움 객체 초기화.
-    cr.init_driver()
+    driver_instance = cr.init_driver()
 
     # 셀레니움 객체로 해당 사이트로 이동및 로딩을 위한 5초 기다림.
-    cr.move("https://pad.neocyon.com/W/notice/list.aspx")
-    cr.waitTag("tbody")
+    cr.move(driver_instance, "https://pad.neocyon.com/W/notice/list.aspx")
+    cr.waitTag(driver_instance, "tbody")
     #cr.waitSecond(5)
 
     # 공지 객체들이 tr 태그로 나와서 tr 객체 전부 조사
-    elements = cr.getElementsByTagName('tr')
+    elements = cr.getElementsByTagName(driver_instance, 'tr')
 
     # 결과 저장용 리스트 객체
     result = []
@@ -34,7 +34,7 @@ def crawling (isDebug = False):
             pass
         #print(e.text)
     log.info("Crawling END")
-    cr.quit()
+    cr.quit(driver_instance)
     #시작타이틀 제외한 값만 넣기
     return result
     

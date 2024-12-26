@@ -20,7 +20,7 @@ driver = None
 
 # 셀레니움 드라이브 초기화
 def init_driver(): 
-    global driver
+    driver = None
     # 브라우저 꺼짐 방지
     chrome_options = Options()
     chrome_options.add_experimental_option("detach", True) # 자동으로 안꺼지는 옵션
@@ -35,56 +35,49 @@ def init_driver():
 
     service = Service(excutable_path=ChromeDriverManager().install()) 
     driver = webdriver.Chrome(service=service, options = chrome_options)
+    
+    return driver
 
 # 이동하려는 해당 웹페이지 주소 할당
-def move(url):
-    global driver
+def move(driver, url):
     driver.get(url)
     
 #뒤로가기 
-def back():
-    global driver
+def back(driver):
     driver.back()
     
 # 새로고침
-def refresh():
-    global driver
+def refresh(driver):
     driver.refresh()
     
 # 앞으로가기
-def forward():
-    global driver
+def forward(driver):
     driver.forward()
 
 # 주어진 xpath에 해당하는 요소 가져옴.
-def getElementByXpath(xpath):
-    global driver
+def getElementByXpath(driver, xpath):
     # '''//*[@id="list"]/tbody'''
     elem = driver.find_element(By.XPATH,xpath)
     return elem
     
 # 주어진 태그네임에해당하는 모든 요소를 리스트로 반환
-def getElementsByTagName(tagName):
-    global driver
+def getElementsByTagName(driver, tagName):
     elements = driver.find_elements(By.TAG_NAME, tagName)
     return elements
 
-def getDriverPageSource():
-    global driver
+def getDriverPageSource(driver):
     return driver.page_source
 
 # 해당 시간 기다림.
-def waitTag(tagName):
-    global driver
+def waitTag(driver, tagName):
     WebDriverWait(driver, timeout=10).until(EC.presence_of_element_located((By.TAG_NAME, tagName)))
     time.sleep(1)
 
 # 정말 고정된 초 동안 기다림.
-def waitSecond(second):
+def waitSecond(driver, second):
     time.sleep(second)
     
-def quit():
-    global driver
+def quit(driver):
     driver.quit()
 
 #driver.get("http://naver.com")

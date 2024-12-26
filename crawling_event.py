@@ -9,11 +9,11 @@ EVENT_URL  = "https://pad.neocyon.com/W/event/list.aspx"
 
 
 def crawling(oldEventNameList, isDebug = False):
-    cr.init_driver()
-    cr.move(EVENT_URL)
-    cr.waitSecond(3)
+    driver_instance = cr.init_driver()
+    cr.move(driver_instance, EVENT_URL)
+    cr.waitSecond(driver_instance, 3)
     log.info("Event Crawling Start")
-    elements = cr.getElementsByTagName("a")
+    elements = cr.getElementsByTagName(driver_instance, "a")
     targetUrls = []
     for e in elements:
         if ("[이벤트]" in e.text) :
@@ -27,8 +27,8 @@ def crawling(oldEventNameList, isDebug = False):
             print(title)
         if title not in oldEventNameList:
             log.info("%s page info" % (targetUrl))
-            cr.move(targetUrl)
-            cr.waitSecond(3)
+            cr.move(driver_instance, targetUrl)
+            cr.waitSecond(driver_instance, 3)
             soup = BeautifulSoup(cr.getDriverPageSource(),'html.parser')
             soupStringList = soup.text.split('\n')
             p = re.compile('[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]')
@@ -50,7 +50,7 @@ def crawling(oldEventNameList, isDebug = False):
             print(elem)
     
     log.info("Event Crawling End")
-    cr.quit()
+    cr.quit(driver_instance)
     return result
                 
 def findEventPeriod(periodInfo):
