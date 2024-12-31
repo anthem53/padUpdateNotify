@@ -58,6 +58,16 @@ def selectEventNameList():
     result = db.fetchall(getConnName())
     return [elem[0] for elem in result]
 
+#다건 조회 with Map
+def selectEventNameDateList():
+    sql = "SELECT name,update_date FROM event"
+    db.execute(getConnName(),sql)
+    result = db.fetchall(getConnName())
+    resultMap = dict()
+    for elem in result:
+        resultMap[elem[0]] = elem[1].strftime("%Y-%m-%d")
+    return resultMap
+
 '''
 오픈중인 이벤트?
 '''
@@ -67,6 +77,9 @@ def isOpenEvent(name,startDate,endDate):
     result = db.fetchall(getConnName())
     return len(result) > 0
 
+def updateEventDate(name, endDate,updateDate):
+    sql = "UPDATE event SET  end_date = %s, update_date = %s WHERE name = %s"
+    db.execute(getConnName(),sql,(endDate,updateDate,name))
 '''
 이벤트 status 수정
 '''
@@ -98,7 +111,7 @@ if __name__ == "__main__":
     #print(selectEventList(),sep='\n')
     
     #insertEvent(("testname","https://www.naver.com",None,None,"0"))
-
+    updateEventDate("레어 에그 ~다크 카니발~","1000-01-01","3000-12-31","2024-12-30")
     
     db.close(getConnName())
     print("test")

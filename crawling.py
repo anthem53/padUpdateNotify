@@ -60,9 +60,13 @@ def getElementByXpath(driver, xpath):
     elem = driver.find_element(By.XPATH,xpath)
     return elem
     
-# 주어진 태그네임에해당하는 모든 요소를 리스트로 반환
+# 주어진 태그네임에 해당하는 모든 요소를 리스트로 반환
 def getElementsByTagName(driver, tagName):
     elements = driver.find_elements(By.TAG_NAME, tagName)
+    return elements
+
+def getChildElmentByTagName(parent, tagName):
+    elements = parent.find_elements(By.TAG_NAME, tagName)
     return elements
 
 def getDriverPageSource(driver):

@@ -1,6 +1,6 @@
 import smtplib
 from email.mime.text import MIMEText
-import crawling_impl
+from customCode.event_code import EventTaskResultCode
 
 # Create MimeText element with processded string message.
 def generateMessage(newDatas):
@@ -25,6 +25,7 @@ def  generateEventMessage(result):
     START = 0
     CLOSE = 1
     NEED = 2
+    UPDATE = 3 
 
     if len(result[START]) > 0 :
         msg += "● 새로 등록된 이벤트리스트\n"
@@ -42,8 +43,14 @@ def  generateEventMessage(result):
         for name, link in result[NEED]:
             msg += "\t - %s : %s\n" % (name,link)
             
-        msg += "\n\n\n 퍼즐앤드래곤 공식 홈페이지 이벤트 사이트 : https://pad.neocyon.com/W/event/list.aspx"
-            
+        
+    
+    if (len(result[EventTaskResultCode.UPDATE.value]) > 0 ):
+        msg += "● 내용이 업데이트 된 이벤트 리스트\n"
+        for name,link, startDate, endDate,updateDate in result[EventTaskResultCode.UPDATE.value]:
+            msg += "\t - [%s] 이벤트가 %s 에 업데이트 되었습니다.해당 이벤트 종료일은 %s 입니다. : %s\n" % (name,updateDate,endDate,link)
+        
+    msg += "\n\n\n 퍼즐앤드래곤 공식 홈페이지 이벤트 사이트 : https://pad.neocyon.com/W/event/list.aspx"    
     return MIMEText(msg)
 
 
