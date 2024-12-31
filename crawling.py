@@ -66,8 +66,8 @@ def getElementsByTagName(driver, tagName):
     return elements
 
 def getChildElmentByTagName(parent, tagName):
-    elements = parent.find_elements(By.TAG_NAME, tagName)
-    return elements
+    children = parent.find_elements(By.TAG_NAME, tagName)
+    return children
 
 def getDriverPageSource(driver):
     return driver.page_source
