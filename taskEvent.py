@@ -13,10 +13,6 @@ from customCode.event_code import EventResultCode, EventTaskResultCode
 
 
 def notify_event_job(is_debug = False):
-    START = 0
-    CLOSE = 1
-    NEED = 2
-    UPDATE = 3
     try:
         log.info("퍼즐앤드래곤 이벤트 크롤링이 시작되었습니다.")
         db_event.init()
@@ -48,7 +44,7 @@ def notify_event_job(is_debug = False):
                 
          #결과 반영할 것 
         #START = 0 , CLOSE = 1, NEED = 2, UPDATE= 3
-        result = [[],[],[],[]]
+        result = [[] for _ in range(len(EventTaskResultCode.__members__.items()))]
 
         # 업데이트된 DB 조회
         eventDataNameList = db_event.selectEventList()
@@ -86,15 +82,15 @@ def notify_event_job(is_debug = False):
         else : 
             log.info("변동된 이벤트가 없습니다.")
             
-        if len(result[NEED]) > 0:
-            writeNeedEvent(result[NEED])
+        if len(result[EventTaskResultCode.NEED.value]) > 0:
+            writeNeedEvent(result[EventTaskResultCode.NEED.value])
         
         db_event.close()
         log.info("퍼즐앤드래곤 이벤트 크롤링 작업이 종료되었습니다.")
     except Exception as e:
         mail.sendEmail(mail.generateErrorMessageWithText(traceback.format_exc()),"퍼즐앤드래곤 이벤트 업데이트 감지 에러 발생")
         log.error("에러로 인해 메일이 전송되지 않았습니다.")
-        traceback.format_exc()
+        log.write(traceback.format_exc())
         db_event.close()
 
 def isResultEmpty(result):
@@ -148,9 +144,7 @@ def getTaskJobThread():
     return threading.Thread(target=schedule_event_notify)
 
 if __name__ == '__main__':
-    writeNeedEvent([("sample test","https://www.naver.com")])
     
-    quit()
     if len(sys.argv) < 2:
         notify_event_job();
     else :
