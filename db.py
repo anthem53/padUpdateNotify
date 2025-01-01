@@ -50,14 +50,14 @@ def fetchall(connName):
 
 # close connection.
 def close(connName):
-    log.info("DB connection이 종료됩니다. " + connName)
+    log.info("DB connection이 종료됩니다. [DB Connection 이름 : " + connName+"]")
     try :
         conn,cur = getConnInfo(connName)
         del connMap[connName]
         cur.close()
         conn.close()
     except Exception as e:
-        log.info("DB Connection이 이미 종료 되었습니다. " + connName)
+        log.info("DB Connection이 이미 종료 되었습니다. [DB Connection 이름 : " + connName+"]")
         log.write(e)
         
 def getConnInfo(connName):
@@ -71,8 +71,9 @@ def getConnInfo(connName):
 def dbTest():
     log.info("DB 연결 테스트 시작 합니다.")
     try :
-        init_db("test")
-        close("test")
+        TEST_CONNECTION_NAME = "test"
+        init_db(TEST_CONNECTION_NAME)
+        close(TEST_CONNECTION_NAME)
         log.info("DB 연결이 정상적입니다.")
     except Exception as e :
         log.error("DB가 연결 실패 하였습니다.")

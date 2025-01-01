@@ -15,9 +15,8 @@ def isExistEvent(eventName):
 
     return len(result) > 0
 
-'''
-Event(name, link ,startDate, endDate, status)
-'''
+
+#Event(name, link ,startDate, endDate, status)
 def insertEvent(event):
     
     name = event[0]
@@ -32,26 +31,23 @@ def insertEvent(event):
     
     db.execute(getConnName(),sql,(name, link, status, startDate,endDate,updateDate))
         
-'''
- 단건 조회
-'''
+
+#단건 조회
 def selectEvent(name):
     sql = "SELECT * FROM event WHERE name = %s" 
     db.execute(getConnName(),sql,(name))
     result = db.fetchall(getConnName())
     return result   
 
-'''
-다건조회
-'''
+
+#다건조회
 def selectEventList():
     sql = "SELECT * FROM event"
     db.execute(getConnName(),sql)
     result = db.fetchall(getConnName())
     return result   
-'''
-다건조회 Only name
-'''
+
+#다건조회 Only name
 def selectEventNameList():
     sql = "SELECT name FROM event"
     db.execute(getConnName(),sql)
@@ -68,35 +64,34 @@ def selectEventNameDateList():
         resultMap[elem[0]] = elem[1].strftime("%Y-%m-%d")
     return resultMap
 
-'''
-오픈중인 이벤트?
-'''
+
+#오픈중인 이벤트
 def isOpenEvent(name,startDate,endDate):
     sql = "SELECT 1 FROM event WHERE name = '%s' AND startDate >= '%s' AND endDate <='%s'" % (name,startDate, endDate)
     db.execute(getConnName(),sql)
     result = db.fetchall(getConnName())
     return len(result) > 0
 
+# event endDate 업데이트
 def updateEventDate(name, endDate,updateDate):
     sql = "UPDATE event SET  end_date = %s, update_date = %s WHERE name = %s"
     db.execute(getConnName(),sql,(endDate,updateDate,name))
-'''
-이벤트 status 수정
-'''
+
+#이벤트 status 수정
 def updateEventStatus(name, status):
     sql = "UPDATE event SET status = '%s' WHERE name = '%s'" % (str(status), name)
     db.execute(getConnName(),sql)
     
-'''
-이벤트 삭제
-'''
+
+#이벤트 삭제
 def deleteEvent(name):
     log.info("delete event [%s]" % (name))
     sql = "DELETE FROM event WHERE name = '%s'" %(name)
     db.execute(getConnName(),sql)
 
-def getTimeFormat(targetDatetime):
-    return targetDatetime.strftime("%Y-%m-%d")
+#이벤트 목록에 있는 날짜 format으로 Date를 string으로 변환하는 함수
+def getTimeFormat(targetDate):
+    return targetDate.strftime("%Y-%m-%d")
 
 # 커넥션 이름 획득
 def getConnName():

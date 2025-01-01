@@ -65,10 +65,12 @@ def getElementsByTagName(driver, tagName):
     elements = driver.find_elements(By.TAG_NAME, tagName)
     return elements
 
+# 특정 요소의 특정 태그를 가진 자식 요소를 획득
 def getChildElmentByTagName(parent, tagName):
     children = parent.find_elements(By.TAG_NAME, tagName)
     return children
 
+# 해당 드라이버의 page_source 획득
 def getDriverPageSource(driver):
     return driver.page_source
 
@@ -77,10 +79,11 @@ def waitTag(driver, tagName):
     WebDriverWait(driver, timeout=10).until(EC.presence_of_element_located((By.TAG_NAME, tagName)))
     time.sleep(1)
 
-# 정말 고정된 초 동안 기다림.
+# 정말 고정된 초 동안 기다림. driver는 사용하지 않으나 다른 함수와 동일한 매개변수 구조를 위해 삽입.
 def waitSecond(driver, second):
     time.sleep(second)
     
+# 해당 크롤링 드라이버 종료. 크롤링 로직 종료시 반드시 호출 해야함.
 def quit(driver):
     driver.quit()
     

@@ -4,10 +4,10 @@ import time
 import mail
 import crawling_event
 import db_event
-import db 
 import log
 from datetime import date
 import sys
+import traceback
 
 from customCode.event_code import EventResultCode, EventTaskResultCode
 
@@ -92,9 +92,9 @@ def notify_event_job(is_debug = False):
         db_event.close()
         log.info("퍼즐앤드래곤 이벤트 크롤링 작업이 종료되었습니다.")
     except Exception as e:
-        mail.sendEmail(mail.generateErrorMessageWithText(str(e)),"퍼즐앤드래곤 업데이트 감지 시스템 에러 발생")
+        mail.sendEmail(mail.generateErrorMessageWithText(traceback.format_exc()),"퍼즐앤드래곤 이벤트 업데이트 감지 에러 발생")
         log.error("에러로 인해 메일이 전송되지 않았습니다.")
-        log.write(e)
+        traceback.format_exc()
         db_event.close()
 
 def isResultEmpty(result):
@@ -123,7 +123,7 @@ def writeNeedEvent(needList):
             <title>Page Title</title>
         </head>
         <body style="margin-left: 30vw; margin-top:5vw">
-            <h1>%s</h1>\n""" % ("퍼즐앤드래곤 이벤트 크롤링 시간 : "+log.currentTime())
+            <h1>%s</h1>\n""" % ("퍼즐앤드래곤 이벤트 크롤링 시간 : <br>"+log.currentTime())
     
     for name, link in needList:
         html_text += '''            <div><span>%s : </span>  <a href='%s'>링크</a></div>\n''' % (name,link)
@@ -148,7 +148,9 @@ def getTaskJobThread():
     return threading.Thread(target=schedule_event_notify)
 
 if __name__ == '__main__':
+    writeNeedEvent([("sample test","https://www.naver.com")])
     
+    quit()
     if len(sys.argv) < 2:
         notify_event_job();
     else :

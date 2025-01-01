@@ -20,18 +20,18 @@ class scheduler (threading.Thread):
         self.taskList.append((name,job,period))
         
     def run (self):
-        if (self.isDebug == True):
-            for name, job,period in self.taskList:
-                log.info(name + " 스케줄이 시작되었습니다.")
-                #schedule.every().day.at(period).do(job)
-                #schedule.every(3).seconds.do(job)
-                schedule.every(1).minutes.do(job)
-        else:
+        if (self.isDebug == False):
             for name, job,period in self.taskList:
                 log.info(name + " 스케줄이 시작되었습니다.")
                 schedule.every().day.at(period).do(job)
                 #schedule.every(3).seconds.do(job)
                 #schedule.every(1).minutes.do(job)
+        else:
+            for name, job,period in self.taskList:
+                log.info(name + " 스케줄이 시작되었습니다.")
+                #schedule.every().day.at(period).do(job)
+                #schedule.every(3).seconds.do(job)
+                schedule.every(1).minutes.do(job)
         while self.status:
             schedule.run_pending()
             time.sleep(1)

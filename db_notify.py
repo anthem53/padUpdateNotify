@@ -54,7 +54,7 @@ def isExistNotify(id):
 
 # clear Notify table. remove all elements in this table.
 def clearData():
-    log.info("Delete All notify Data")
+    log.info("Delete All Notify Data")
     sql = "DELETE FROM notify"
     db.execute(getConnName(),sql)
 

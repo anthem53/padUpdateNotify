@@ -30,6 +30,7 @@ def crawling(oldEventNameDateMap, isDebug = False):
     for title,update_date ,targetUrl in targetUrls:
         if isDebug == True:
             print(title)
+            log.info("%s page info" % (targetUrl))
         if title not in oldEventNameDateMap:
             result.append(execute_crawl(driver_instance,title,update_date,targetUrl,EventResultCode.NEW))
         elif title in oldEventNameDateMap and update_date != oldEventNameDateMap[title]:
@@ -37,6 +38,9 @@ def crawling(oldEventNameDateMap, isDebug = False):
             result.append(execute_crawl(driver_instance,title,update_date,targetUrl,EventResultCode.UPDATE))
         else :
             result.append([title] + [None,None,None,None,EventResultCode.EXIST])
+            
+        if isDebug == True:
+            log.info("Page '%s' Done" % (title))
             
         
     if isDebug == True:
@@ -47,9 +51,8 @@ def crawling(oldEventNameDateMap, isDebug = False):
     cr.quit(driver_instance)
     return result
 
-#TODO
+#실제 crawl 하는 부분. 
 def execute_crawl(driver_instance,title,update_date,targetUrl,resultCode):
-    log.info("%s page info" % (targetUrl))
     cr.move(driver_instance, targetUrl)
     cr.waitSecond(driver_instance, 3)
     soup = BeautifulSoup(cr.getDriverPageSource(driver_instance),'html.parser')
@@ -62,8 +65,6 @@ def execute_crawl(driver_instance,title,update_date,targetUrl,resultCode):
         dateInfo = p.findall(sentence)
         if len(dateInfo) >= 2 :
             datetimeList.extend(dateInfo)
-            
-    log.info("Page '%s' Done" % (title))
     
     return [title] + [targetUrl] + findEventPeriod(datetimeList) + [update_date] + [resultCode]
           

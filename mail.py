@@ -22,28 +22,21 @@ def generateMessage(newDatas):
 def  generateEventMessage(result):
     msg = "일정이 변경된 이벤트 리스트\n\n\n"
 
-    START = 0
-    CLOSE = 1
-    NEED = 2
-    UPDATE = 3 
-
-    if len(result[START]) > 0 :
+    if len(result[EventTaskResultCode.START.value]) > 0 :
         msg += "● 새로 등록된 이벤트리스트\n"
-        for name, link in result[START]:
+        for name, link in result[EventTaskResultCode.START.value]:
             msg += "\t - %s : %s\n" % (name,link)
             
             
-    if len(result[CLOSE]) > 0 :
+    if len(result[EventTaskResultCode.CLOSE.value]) > 0 :
         msg += "● 종료된 이벤트리스트\n"
-        for name, link in result[CLOSE]:
+        for name, link in result[EventTaskResultCode.CLOSE.value]:
             msg += "\t - %s : %s\n" % (name,link)
             
-    if len(result[NEED]) > 0 :
+    if len(result[EventTaskResultCode.NEED.value]) > 0 :
         msg += "● 입력 필요한 이벤트리스트\n"
-        for name, link in result[NEED]:
+        for name, link in result[EventTaskResultCode.NEED.value]:
             msg += "\t - %s : %s\n" % (name,link)
-            
-        
     
     if (len(result[EventTaskResultCode.UPDATE.value]) > 0 ):
         msg += "● 내용이 업데이트 된 이벤트 리스트\n"
@@ -53,9 +46,9 @@ def  generateEventMessage(result):
     msg += "\n\n\n 퍼즐앤드래곤 공식 홈페이지 이벤트 사이트 : https://pad.neocyon.com/W/event/list.aspx"    
     return MIMEText(msg)
 
-
-def generateErrorMessageWithText(errorText):
-    content = "에러로 인해 업데이트 체크 시스템이 종료되었습니다. 재기동 해주십시오.\n\n- 에러 내용\n\n"
+# 에러 알림 메시지 + 해당 내용
+def generateErrorMessageWithText(errorText:str):
+    content = "에러로 인해 업데이트 체크 시스템이 종료되었습니다. 확인 해주십시오.\n\n- 에러 내용\n\n"
     
     content += str(errorText)
     
@@ -63,7 +56,7 @@ def generateErrorMessageWithText(errorText):
 
 # send Error message
 def generateErrorMessage():
-    return MIMEText("에러로 인해 업데이트 체크 시스템이 종료되었습니다. 재기동 해주십시오.")
+    return MIMEText("에러로 인해 업데이트 체크 시스템이 종료되었습니다. 확인 해주십시오.")
 
 
 # send given Message without processing process
