@@ -1,12 +1,7 @@
 import schedule
 import threading
 import time
-import mail
-import crawling_impl
-import db_notify
-import db
 import log
-import sys
 
 class scheduler (threading.Thread):
     def __init__(self,isDebug = False):

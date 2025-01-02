@@ -9,7 +9,9 @@ from datetime import date
 import sys
 import traceback
 
-from customCode.event_code import EventResultCode, EventTaskResultCode
+from customCode.event_code import EventResultCode, EventTaskResultCode , EventStatus
+
+from model.event import Event
 
 
 def notify_event_job(is_debug = False):
@@ -35,7 +37,7 @@ def notify_event_job(is_debug = False):
             if is_debug == True:
                 print((name,link, startDate, endDate))
             if eventResultCode == EventResultCode.NEW:
-                db_event.insertEvent((name,link,startDate,endDate,"0"))
+                db_event.insertEvent(Event(name,link,EventStatus.DISABLE.value ,startDate, endDate,updateDate))
             elif eventResultCode == EventResultCode.UPDATE:
                 db_event.updateEventDate(name,endDate,updateDate)
                 updateList.add(name)
@@ -47,10 +49,10 @@ def notify_event_job(is_debug = False):
         result = [[] for _ in range(len(EventTaskResultCode.__members__.items()))]
 
         # 업데이트된 DB 조회
-        eventDataNameList = db_event.selectEventList()
+        eventList = db_event.selectEventList()
         
         # 돌면서 이벤트 검증.
-        for (name,link,status ,startDate, endDate,updateDate) in eventDataNameList:
+        for (name,link,status ,startDate, endDate,updateDate) in eventList:
             # 날짜 등록 x 시 result에 넣기. 그래도 status는 0로 유지.
             if startDate == None or endDate == None:
                 result[EventTaskResultCode.NEED.value].append((name,link))
@@ -62,13 +64,12 @@ def notify_event_job(is_debug = False):
             elif isOpenDate(startDate,endDate) == False and status == '1':
                 result[EventTaskResultCode.CLOSE.value].append((name,link))
                 db_event.updateEventStatus(name,"0")
-            elif status == "0":
+            elif isOpenDate(startDate,endDate) == False and status == '0':
+                log.info("이벤트 '%s'는 홈페이지에 등록 되었으나, 아직 시작하지 않았습니다." % (name))
                 pass
-                #print("TEST")
-                #result[CLOSE].append((name,link))
             else :
-                #print("NoResult")
                 pass
+            
             if name in updateList :
                 result[EventTaskResultCode.UPDATE.value].append((name,link,startDate, endDate,updateDate))
             
@@ -104,12 +105,6 @@ def isOpenDate(startDate,endDate):
         return False
     curDate= date.today()
     return startDate <= curDate and curDate <= endDate
-
-def isWillOpen(startDate):
-    if (startDate == None):
-        return False
-    curDate= date.today()
-    return curDate < startDate;
 
 def writeNeedEvent(needList):
     html_text = """

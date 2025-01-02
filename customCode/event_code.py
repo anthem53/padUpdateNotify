@@ -10,3 +10,7 @@ class EventTaskResultCode(Enum):
     CLOSE = 1
     NEED = 2
     UPDATE = 3 
+    
+class EventStatus(Enum):
+    DISABLE = "0"
+    ENABLE = "1"

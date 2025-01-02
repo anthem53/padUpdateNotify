@@ -1,4 +1,3 @@
-import mail
 import db
 import crawling
 import log

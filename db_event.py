@@ -1,6 +1,7 @@
 import db
 import log
 from datetime import datetime
+from model.event import Event
 
 def init():
     db.init_db(getConnName())
@@ -16,20 +17,13 @@ def isExistEvent(eventName):
     return len(result) > 0
 
 
-#Event(name, link ,startDate, endDate, status)
-def insertEvent(event):
-    
-    name = event[0]
-    link = event[1]
-    status = event[4]
-    startDate = event[2]
-    endDate = event[3]
-    updateDate= getTimeFormat(datetime.today())
-    log.info("Insert event : " + name)
+#Event(name, link ,status, startDate, endDate, updateDate)
+def insertEvent(event:Event):
+    log.info("Insert event : " + event.name)
     
     sql = "INSERT INTO event (name, link, status, start_date, end_date, update_date) values (%s,%s,%s,%s,%s,%s)" 
     
-    db.execute(getConnName(),sql,(name, link, status, startDate,endDate,updateDate))
+    db.execute(getConnName(),sql,(event.name, event.link, event.status, event.startDate,event.endDate,event.updateDate))
         
 
 #단건 조회
