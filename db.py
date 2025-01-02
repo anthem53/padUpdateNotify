@@ -39,6 +39,7 @@ def execute(connName,sql,values=None):
             cur.execute(sql,values)
         conn.commit()
     except Exception as e:
+        conn.rollback()
         log.info("DB.execute  Exception")
         log.write(e)
     
