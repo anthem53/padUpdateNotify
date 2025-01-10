@@ -13,6 +13,6 @@ class Event:
             self.status = name[2]
             self.startDate = name[3]
             self.endDate = name[4]
-            self.UpdateDate= name[5]
+            self.updateDate= name[5]
         
         
