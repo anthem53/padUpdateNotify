@@ -6,7 +6,7 @@ class Event:
             self.status = status
             self.startDate = startDate
             self.endDate = endDate
-            self.UpdateDate= updateDate
+            self.updateDate= updateDate
         else :
             self.name = name[0]
             self.link = name[1]
@@ -14,5 +14,3 @@ class Event:
             self.startDate = name[3]
             self.endDate = name[4]
             self.updateDate= name[5]
-        
-        
