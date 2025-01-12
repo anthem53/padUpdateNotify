@@ -21,9 +21,11 @@ def notify_event_job(is_debug = False):
         
         # 기존 DB에 있는 event의 이름 목록 조회
         oldEventNameDateMap = db_event.selectEventNameDateList()
+        
+        exceptionWordList = loadExceptionWordConfig()
 
         # event 크롤링 
-        crawledEventList = crawling_event.crawling(oldEventNameDateMap) 
+        crawledEventList = crawling_event.crawling(oldEventNameDateMap,exceptionWordList) 
         #crawledEventList = [['서비스 12주년 기념 스페셜 세트 판매!', 'https://pad.neocyon.com/W/event/view.aspx?id=2235', datetime.date(2024, 12, 16), datetime.date(2025, 1, 12)], ['대감사제! 앙케이트 슈퍼 갓 페스티벌 개최 결정!', 'None', 'None', 'None'], ['레어 에그 ~트리 카니발~', 'None', 'None', 'None'], ['그라비티 네오싸이언 설문조사', 'https://pad.neocyon.com/Poll.aspx?PollGroupSeq=206', None, None], ['겅호 콜라보 외전 캐릭터가 기간한정으로 등장!', 'None', 'None', 'None'], ['서비스 12주년 기념 이벤트!', 'None', 'None', 'None'], ['퍼즐앤드래곤 대감사제', 'None', 'None', 'None'], ['[마법석 100개+대감사제 세트 [12월]] 판매!', 'None', 'None', 'None'], ['[대감사제 스페셜 세트] 판매!', 'None', 'None', 'None']]
     
         # crawledEventList elemnet  [title , targetUrl , startDate, endDate ]
@@ -99,6 +101,25 @@ def isResultEmpty(result):
         if len(subList) > 0:
             return False
     return True    
+
+def loadExceptionWordConfig(isDebug = False):
+    try :
+        wordList = []
+        f = open("exceptionWord.config","r", encoding='UTF8')
+        while True:
+            line = f.readline()
+            for rawWord in line.split(",") :
+                if rawWord.strip() != "":
+                    wordList.append(rawWord.strip())
+            if not line :
+                break
+        return wordList       
+    except Exception as e:
+        if isDebug == True:
+            log.write(traceback.format_exc())
+        else: pass
+        return []
+    
 
 def isOpenDate(startDate,endDate):
     if (startDate == None or endDate == None):

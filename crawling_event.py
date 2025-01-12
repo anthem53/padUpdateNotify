@@ -9,7 +9,7 @@ from customCode.event_code import EventResultCode
 EVENT_URL  = "https://pad.neocyon.com/W/event/list.aspx"
 
 # returnValue = [title] + [targetUrl] + [startDATE] [endDate] +[updateDate] + [resultCode]
-def crawling(oldEventNameDateMap, isDebug = False):
+def crawling(oldEventNameDateMap, exceptionWordList = [],isDebug = False):
     driver_instance = cr.init_driver()
     cr.move(driver_instance, EVENT_URL)
     cr.waitSecond(driver_instance, 3)
@@ -31,6 +31,17 @@ def crawling(oldEventNameDateMap, isDebug = False):
         if isDebug == True:
             print(title)
             log.info("%s page info" % (targetUrl))
+            
+        isExcept = False
+        for exceptionWord in exceptionWordList:
+            if exceptionWord in title:
+                isExcept = True 
+                break
+            else:pass
+            
+        if isExcept == True:
+            continue
+            
         if title not in oldEventNameDateMap:
             result.append(execute_crawl(driver_instance,title,update_date,targetUrl,EventResultCode.NEW))
         elif title in oldEventNameDateMap and update_date != oldEventNameDateMap[title]:
@@ -106,7 +117,7 @@ def __crawlingEventTest__():
     
 if __name__ == "__main__":
     testdict = dict()
-    testdict["퍼즐앤드래곤 대감사제"] = "2024-12-24"
-    result = crawling([],testdict,True)
+    #testdict["퍼즐앤드래곤 대감사제"] = "2024-12-24"
+    result = crawling(testdict)
     #__crawlingEventTest__()
     
