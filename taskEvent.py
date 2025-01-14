@@ -58,7 +58,7 @@ def notify_event_job(is_debug = False):
             # 날짜 등록 x 시 result에 넣기. 그래도 status는 0로 유지.
             if startDate == None or endDate == None:
                 result[EventTaskResultCode.NEED.value].append((name,link))
-            # open인데 status = 1인 경우는 새로 추가된 경우. 따라서 넣기
+            # open인데 status = 0인 경우는 새로 추가된 경우. 따라서 넣기
             elif isOpenDate(startDate,endDate) == True and status == '0':
                 result[EventTaskResultCode.START.value].append((name,link))
                 db_event.updateEventStatus(name,"1")
@@ -125,7 +125,7 @@ def isOpenDate(startDate,endDate):
     if (startDate == None or endDate == None):
         return False
     curDate= date.today()
-    return startDate <= curDate and curDate <= endDate
+    return startDate <= curDate and curDate < endDate
 
 def writeNeedEvent(needList):
     html_text = """
