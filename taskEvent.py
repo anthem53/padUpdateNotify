@@ -58,6 +58,10 @@ def notify_event_job(is_debug = False):
             # 날짜 등록 x 시 result에 넣기. 그래도 status는 0로 유지.
             if startDate == None or endDate == None:
                 result[EventTaskResultCode.NEED.value].append((name,link))
+            # DB에 있는데 크롤링 안되면 일단 종료된 것. 삭제와 동시에 종료 이벤트 진행.
+            elif name not in crawledEventNameList:
+                db_event.deleteEvent(name)
+                result[EventTaskResultCode.CLOSE.value].append((name,link))
             # open인데 status = 0인 경우는 새로 추가된 경우. 따라서 넣기
             elif isOpenDate(startDate,endDate) == True and status == '0':
                 result[EventTaskResultCode.START.value].append((name,link))
@@ -65,7 +69,7 @@ def notify_event_job(is_debug = False):
             # status는 1인데 close는 이제 이벤트가 끝난거. 역시 통보
             elif isOpenDate(startDate,endDate) == False and status == '1':
                 result[EventTaskResultCode.CLOSE.value].append((name,link))
-                db_event.updateEventStatus(name,"0")
+                db_event.updateEventStatus(name,"2")
             elif isOpenDate(startDate,endDate) == False and status == '0':
                 log.info("이벤트 '%s'는 홈페이지에 등록 되었으나, 아직 시작하지 않았습니다." % (name))
                 pass
@@ -74,10 +78,7 @@ def notify_event_job(is_debug = False):
             
             if name in updateList :
                 result[EventTaskResultCode.UPDATE.value].append((name,link,startDate, endDate,updateDate))
-            
-            if name not in crawledEventNameList:
-                db_event.deleteEvent(name)
-                
+                      
         if isResultEmpty(result) == False:
             log.info("변동된 이벤트가 있어 메일 발송을 시작하였습니다.")
             mail.sendEmail(mail.generateEventMessage(result),"퍼즐앤드래곤 이벤트 일정 변경 알림")
@@ -125,7 +126,7 @@ def isOpenDate(startDate,endDate):
     if (startDate == None or endDate == None):
         return False
     curDate= date.today()
-    return startDate <= curDate and curDate < endDate
+    return startDate <= curDate and curDate <= endDate
 
 def writeNeedEvent(needList):
     html_text = """
