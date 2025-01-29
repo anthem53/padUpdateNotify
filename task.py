@@ -24,7 +24,7 @@ def notify_job(is_debug = False):
             log.info("업데이트된 내용이 없어 메일발송하지 않았습니다.")
         db_notify.close()
     except Exception as e:
-        mail.sendEmail(mail.generateErrorMessageWithText(traceback.format_exc()),"퍼즐앤드래곤 공지 업데이트 감지 에러 발생")
+        #mail.sendEmail(mail.generateErrorMessageWithText(traceback.format_exc()),"퍼즐앤드래곤 공지 업데이트 감지 에러 발생")
         log.error("에러로 인해 메일이 전송되지 않았습니다.")
         log.write(traceback.format_exc())
         db_notify.close()

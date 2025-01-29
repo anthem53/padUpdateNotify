@@ -4,12 +4,12 @@ CREATE DATABASE padNotify;
 USE padNotify;
 
 CREATE TABLE `notify` (
-   `id` int NOT NULL,
+   `id` varchar(6) NOT NULL,
    `title` varchar(200) NOT NULL,
    `date` date DEFAULT NULL,
    `origin` varchar(1000) NOT NULL,
-   PRIMARY KEY (`id`)
- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+   PRIMARY KEY (`id`,`title`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
 
 CREATE TABLE `event` (

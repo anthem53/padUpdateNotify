@@ -15,7 +15,7 @@ def getNewDatas(rawDatas):
 
     for id, title , date, ori in rawDatas:
         # 순회후 중복되지 않은 경우 result에 추가
-        if isExistNotify(id) == False:
+        if isExistNotify(id,title) == False:
             result.append((id,title,date,ori))
     
     # 반환
@@ -31,20 +31,20 @@ def insertRawDatas(rawDatas):
 
 # Insert Data to notify 
 def insertData(id,title, date, originText):
-    if isExistNotify(id) == True:
+    if isExistNotify(id,title) == True:
         return False
 
-    sql = "INSERT INTO notify (id, title,date,origin) VALUES (%d, '%s', '%s','%s')" %(id, title, date, originText)
-    db.execute(getConnName(),sql)
+    sql = "INSERT INTO notify (id, title,date,origin) VALUES (%s, %s, %s,%s)"
+    db.execute(getConnName(),sql,(id, title, date, originText))
 
     return True
 
 # Check item duplication. Find row with id, and If found, return True, and False
 # This function is not main. So If you want to use this function, use should init db and close yourself.
-def isExistNotify(id):
+def isExistNotify(id, title):
 
-    sql = "SELECT 1 FROM notify WHERE id=%d" % (id)
-    db.execute(getConnName(),sql)
+    sql = "SELECT 1 FROM notify WHERE id=%s AND title=%s"
+    db.execute(getConnName(),sql,(id,title))
     result = db.fetchall(getConnName())
 
     if len(result) > 0 :

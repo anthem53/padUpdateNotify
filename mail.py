@@ -11,7 +11,7 @@ def generateMessage(newDatas):
     if len(newDatas) > 0 :
         # 해당 내용을 메일 내용에 추가
         for id, title , date, ori in newDatas:
-            result = result + "%d %s %s\n" %(id, title, date)
+            result = result + "%s %s %s\n" %(id, title, date)
     else : 
         result += "새로운 업데이트 내용이 없습니다."
     
