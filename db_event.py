@@ -1,6 +1,6 @@
 import db
 import log
-from datetime import datetime
+from datetime import date
 from model.event import Event
 
 def init():
@@ -20,9 +20,7 @@ def isExistEvent(eventName):
 #Event(name, link ,status, startDate, endDate, updateDate)
 def insertEvent(event:Event):
     log.info("Insert event : " + event.name)
-    
-    sql = "INSERT INTO event (name, link, status, start_date, end_date, update_date) values (%s,%s,%s,%s,%s,%s)" 
-    
+    sql = "INSERT INTO event (name, link, status, start_date, end_date, update_date) values (%s,%s,%s,%s,%s,%s)"     
     db.execute(getConnName(),sql,(event.name, event.link, event.status, event.startDate,event.endDate,event.updateDate))
         
 
@@ -97,10 +95,12 @@ if __name__ == "__main__":
     
     #insertEvent(("test eventname3","www.naver.com","2024-10-11","2244-12-14"))
     
+    insertEvent(Event("test","https://www.naver.com","0",date.today(),date.today(),date.today()))
+    
     #print(selectEventList(),sep='\n')
     
     #insertEvent(("testname","https://www.naver.com",None,None,"0"))
-    updateEventDate("레어 에그 ~다크 카니발~","1000-01-01","3000-12-31","2024-12-30")
+    #updateEventDate("레어 에그 ~다크 카니발~","1000-01-01","3000-12-31","2024-12-30")
     
     db.close(getConnName())
     print("test")
