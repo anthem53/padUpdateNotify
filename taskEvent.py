@@ -52,7 +52,6 @@ def notify_event_job(is_debug = False):
 
         # 업데이트된 DB 조회
         eventList = db_event.selectEventList()
-        crawledEventNameList.append("test")
         
         # 돌면서 이벤트 검증.
         for (name,link,status ,startDate, endDate,updateDate) in eventList:
