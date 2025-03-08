@@ -30,22 +30,6 @@ def notify_job(is_debug = False):
         db_notify.close()
 
 
-def schedule_notify():
-    log.info("공지 크롤링 스케줄이 시작되었습니다.")
-    #schedule.every().day.at("18:00").do(notify_job)
-    schedule.every(1).minutes.do(notify_job)
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
-
-def getTaskJobThread():
-    return threading.Thread(target=schedule_notify)
-
 if __name__ == '__main__':
-   
-    if len(sys.argv) < 2:
-        notify_job();
-    else :
-        notify_thread = threading.Thread(target=schedule_notify)
-        notify_thread.start()
+    notify_job();
     

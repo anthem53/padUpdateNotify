@@ -142,23 +142,7 @@ def is_instant_event(start_date,end_date):
     cur_date= date.today()
     return start_date == end_date and start_date == cur_date
     
-        
-def schedule_event_notify():
-    log.info("이벤트 크롤링 스케줄이 시작되었습니다.")
-    #schedule.every().day.at("18:30").do(notify_event_job)
-    schedule.every(1).minutes.do(notify_event_job)
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
-
-def getTaskJobThread():
-    return threading.Thread(target=schedule_event_notify)
 
 if __name__ == '__main__':
-    
-    if len(sys.argv) < 2:
-        notify_event_job(True)
-    else :
-        notify_thread = getTaskJobThread()
-        notify_thread.start()
+    notify_event_job(True)
     
