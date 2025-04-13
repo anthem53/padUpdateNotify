@@ -42,6 +42,7 @@ def notify_event_job(is_debug = False):
                 db_event.insertEvent(Event(name,link,EventStatus.DISABLE.value ,startDate, endDate,updateDate))
             elif eventResultCode == EventResultCode.UPDATE:
                 db_event.updateEventDate(name,endDate,updateDate)
+                db_event.updateEventStatus(name,"1")
                 updateList.add(name)
             else:
                 pass
@@ -95,7 +96,6 @@ def notify_event_job(is_debug = False):
         else : 
             log.info("변동된 이벤트가 없습니다.")
             
-                
         db_event.close()
         log.info("퍼즐앤드래곤 이벤트 크롤링 작업이 종료되었습니다.")
     except Exception as e:

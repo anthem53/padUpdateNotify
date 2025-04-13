@@ -68,7 +68,9 @@ def getConnInfo(connName):
     else :
         raise Exception("해당 커넥션은 초기화되지 않았습니다. "+ connName)
     
-
+"""
+프로그램 시작시 DB 연결 확인 테스트 로직
+"""
 def dbTest():
     log.info("DB 연결 테스트 시작 합니다.")
     try :

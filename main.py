@@ -1,5 +1,5 @@
 import sys
-import task
+import taskNotice
 import taskEvent
 import atexit
 import log
@@ -26,7 +26,7 @@ if __name__ == '__main__':
         
     try :
         if len(sys.argv) < 2: 
-            task.notify_job();
+            taskNotice.notify_job();
             taskEvent.notify_event_job()
         else :
             isDebug = False
@@ -35,7 +35,7 @@ if __name__ == '__main__':
                 isDebug = True
             atexit.register(lambda : endFunction(isDebug))
             scheduleWorker = taskScheduler.scheduler(isDebug)
-            scheduleWorker.setScheduleTask("공지 크롤링",task.notify_job,"18:00")
+            scheduleWorker.setScheduleTask("공지 크롤링",taskNotice.notify_job,"18:00")
             scheduleWorker.setScheduleTask("이벤트 크롤링",taskEvent.notify_event_job,"18:00")
             scheduleWorker.start()
             

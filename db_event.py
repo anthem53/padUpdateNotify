@@ -66,7 +66,7 @@ def isOpenEvent(name,startDate,endDate):
 
 # event endDate 업데이트
 def updateEventDate(name, endDate,updateDate):
-    sql = "UPDATE event SET  end_date = %s, update_date = %s WHERE name = %s"
+    sql = "UPDATE event SET end_date = %s, update_date = %s WHERE name = %s"
     db.execute(getConnName(),sql,(endDate,updateDate,name))
 
 #이벤트 status 수정

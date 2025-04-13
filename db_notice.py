@@ -60,9 +60,9 @@ def clearData():
 
 
 def getConnName():
-    return "Notify"
+    return "Notice"
 
-import crawling_impl
+import crawling_notice
 if __name__ == "__main__":
     init()
     
