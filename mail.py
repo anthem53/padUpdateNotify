@@ -1,6 +1,7 @@
 import smtplib
 from email.mime.text import MIMEText
 from customCode.event_code import EventTaskResultCode
+import log
 
 # Create MimeText element with processded string message.
 def generateMessage(newDatas):
@@ -66,9 +67,7 @@ def generateCustomMessage(content:str):
 # message is MIMEText type
 def sendEmail(message:MIMEText,title):
     configInfo = dict()
-
     f= open("mail.config",'r')
-
     while True:
         line = f.readline().strip()
         #print(line)
@@ -82,9 +81,7 @@ def sendEmail(message:MIMEText,title):
 
     #587포트 및 465포트 존재
     smtp = smtplib.SMTP('smtp.gmail.com', 587)
-
     smtp.ehlo()
-
     smtp.starttls()
 
     #로그인을 통해 지메일 접속
@@ -101,7 +98,32 @@ def sendEmail(message:MIMEText,title):
     #객체 닫기
     smtp.quit()
 
+def sendTest():
+    try :
+        log.info("메일 발송 기본 설정 테스트 시작합니다.")
+        configInfo = dict()
+        f= open("mail.config",'r')
+        while True:
+            line = f.readline().strip()
+            #print(line)
+            if line =="":
+                break
+            else:
+                parsed = line.split("=")
+                configInfo[parsed[0]] = parsed[1]
 
+        #587포트 및 465포트 존재
+        smtp = smtplib.SMTP('smtp.gmail.com', 587)
+        smtp.ehlo()
+        smtp.starttls()
+
+        #로그인을 통해 지메일 접속
+        smtp.login(configInfo["from"], configInfo["password"])
+        smtp.quit()
+        log.info("메일 발송 기본 설정이 정상적입니다.")
+    except Exception:
+        raise Exception
+        
 
 
 if __name__ == "__main__":

@@ -2,6 +2,7 @@ import db
 import crawling
 import log
 import socket
+import mail
 
 def execute():
     try :
@@ -9,6 +10,7 @@ def execute():
         internetTest()
         db.dbTest()
         crawling.crawlTest()
+        mail.sendTest()
         log.info("서비스 시작 전 설정 테스트 성공")
     except Exception:
         log.error("서비스 설정에 에러가 발생하였습니다.")
