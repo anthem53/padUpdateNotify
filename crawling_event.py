@@ -3,7 +3,7 @@ import log
 from bs4 import BeautifulSoup
 import re
 import datetime
-from customCode.event_code import EventResultCode
+from custom_code.event_code import EventResultCode
 
 
 EVENT_URL  = "https://pad.neocyon.com/W/event/list.aspx"
