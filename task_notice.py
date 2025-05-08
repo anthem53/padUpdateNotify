@@ -18,7 +18,7 @@ def notify_job(is_debug = False):
             db_notice.clearData()
             db_notice.insertRawDatas(rawDatas)
             log.info("DB 삽입 완료, 메일 전송 전 ")
-            mail.sendEmail(mail.generateMessage(newDatas),'퍼즐앤드래곤 신규 업데이트')
+            mail.sendEmail(mail.generate_notice_message(newDatas),'퍼즐앤드래곤 신규 업데이트')
             log.info("메일 발송 이벤트가 완료 되었습니다.")
         else:
             log.info("업데이트된 내용이 없어 메일발송하지 않았습니다.")

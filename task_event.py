@@ -1,15 +1,11 @@
-import schedule
-import threading
-import time
 import mail
 import crawling_event
 import db_event
 import log
 from datetime import date
-import sys
 import traceback
 
-from customCode.event_code import EventResultCode, EventTaskResultCode , EventStatus
+from custom_code.event_code import EventResultCode, EventTaskResultCode , EventStatus
 
 from model.event import Event
 
@@ -89,7 +85,7 @@ def notify_event_job(is_debug = False):
         if isResultEmpty(result) == False:
             log.info("변동된 이벤트가 있어 메일 발송을 시작하였습니다.")
             if is_debug == False:           
-                mail.sendEmail(mail.generateEventMessage(result),"퍼즐앤드래곤 이벤트 일정 변경 알림")
+                mail.sendEmail(mail.generate_event_message(result),"퍼즐앤드래곤 이벤트 일정 변경 알림")
             else:
                 log.info("디버그 모드로 실행중이라 실제 메일 발송은 하지 않았습니다.")
             log.info("변동된 이벤트에 대한 메일 발송 완료하였습니다.")
@@ -100,7 +96,7 @@ def notify_event_job(is_debug = False):
         log.info("퍼즐앤드래곤 이벤트 크롤링 작업이 종료되었습니다.")
     except Exception as e:
         if is_debug == False:
-            mail.sendEmail(mail.generateErrorMessageWithText(traceback.format_exc()),"퍼즐앤드래곤 이벤트 업데이트 감지 에러 발생")
+            mail.sendEmail(mail.generate_error_message_with_text(traceback.format_exc()),"퍼즐앤드래곤 이벤트 업데이트 감지 에러 발생")
             log.error("에러로 인해 메일이 전송되지 않았습니다.")
         else: pass
         log.write(traceback.format_exc())

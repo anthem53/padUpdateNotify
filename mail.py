@@ -1,10 +1,10 @@
 import smtplib
 from email.mime.text import MIMEText
-from customCode.event_code import EventTaskResultCode
+from custom_code.event_code import EventTaskResultCode
 import log
 
 # Create MimeText element with processded string message.
-def generateMessage(newDatas):
+def generate_notice_message(newDatas):
     
     result = "신규 업데이트 내용\n\n"
     
@@ -20,7 +20,7 @@ def generateMessage(newDatas):
     
     return MIMEText(result)
 
-def  generateEventMessage(result):
+def  generate_event_message(result):
     msg = "일정이 변경된 이벤트 리스트\n\n\n"
 
     if len(result[EventTaskResultCode.START.value]) > 0 :
@@ -48,7 +48,7 @@ def  generateEventMessage(result):
     return MIMEText(msg)
 
 # 에러 알림 메시지 + 해당 내용
-def generateErrorMessageWithText(errorText:str):
+def generate_error_message_with_text(errorText:str):
     content = "에러로 인해 업데이트 체크 시스템이 종료되었습니다. 확인 해주십시오.\n\n- 에러 내용\n\n"
     
     content += str(errorText)
@@ -56,12 +56,12 @@ def generateErrorMessageWithText(errorText:str):
     return MIMEText(content)
 
 # send Error message
-def generateErrorMessage():
+def generate_error_message():
     return MIMEText("에러로 인해 업데이트 체크 시스템이 종료되었습니다. 확인 해주십시오.")
 
 
 # send given Message without processing process
-def generateCustomMessage(content:str):
+def generate_custom_message(content:str):
     return MIMEText(content)
 
 # message is MIMEText type
@@ -127,4 +127,4 @@ def sendTest():
 
 
 if __name__ == "__main__":
-    sendEmail(generateCustomMessage('일정이 변경된 이벤트 리스트\n\n\n종료된 이벤트리스트\n서비스 12주년 기념 스페셜 세트 판매! : https://pad.neocyon.com/W/event/view.aspx?id=2235\n'),"퍼드 이벤트 변동")
+    sendEmail(generate_custom_message('일정이 변경된 이벤트 리스트\n\n\n종료된 이벤트리스트\n서비스 12주년 기념 스페셜 세트 판매! : https://pad.neocyon.com/W/event/view.aspx?id=2235\n'),"퍼드 이벤트 변동")
