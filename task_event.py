@@ -35,10 +35,10 @@ def notify_event_job(is_debug = False):
             if is_debug == True:
                 print((name,link, startDate, endDate))
             if eventResultCode == EventResultCode.NEW:
-                db_event.insertEvent(Event(name,link,EventStatus.DISABLE.value ,startDate, endDate,updateDate))
+                db_event.insertEvent(Event(name,link,EventStatus.NOT_STARTED.value ,startDate, endDate,updateDate))
             elif eventResultCode == EventResultCode.UPDATE:
-                db_event.updateEventDate(name,endDate,updateDate)
-                db_event.updateEventStatus(name,"1")
+                db_event.update_event(name,link, endDate,updateDate)
+                db_event.updateEventStatus(name,EventStatus.OPENED.value)
                 updateList.add(name)
             else:
                 pass
@@ -63,16 +63,16 @@ def notify_event_job(is_debug = False):
             elif is_instant_event(startDate, endDate):
                 result[EventTaskResultCode.START.value].append((name,link))
                 result[EventTaskResultCode.CLOSE.value].append((name,link))
-                db_event.updateEventStatus(name,"2")
+                db_event.updateEventStatus(name,EventStatus.CLOESED.value)
             # open인데 status = 0인 경우는 새로 추가된 경우. 따라서 넣기
-            elif isOpenDate(startDate,endDate) == True and status == '0':
+            elif isOpenDate(startDate,endDate) == True and status == EventStatus.NOT_STARTED.value:
                 result[EventTaskResultCode.START.value].append((name,link))
-                db_event.updateEventStatus(name,"1")
+                db_event.updateEventStatus(name,EventStatus.OPENED.value)
             # status는 1인데 close는 이제 이벤트가 끝난거. 역시 통보
-            elif isOpenDate(startDate,endDate) == False and status == '1':
+            elif isOpenDate(startDate,endDate) == False and status == EventStatus.OPENED.value:
                 result[EventTaskResultCode.CLOSE.value].append((name,link))
-                db_event.updateEventStatus(name,"2")
-            elif isOpenDate(startDate,endDate) == False and status == '0':
+                db_event.updateEventStatus(name,EventStatus.CLOESED.value)
+            elif isOpenDate(startDate,endDate) == False and status == EventStatus.NOT_STARTED.value:
                 log.info("이벤트 '%s'는 홈페이지에 등록 되었으나, 아직 시작하지 않았습니다." % (name))
                 pass
             else :
@@ -86,9 +86,9 @@ def notify_event_job(is_debug = False):
             log.info("변동된 이벤트가 있어 메일 발송을 시작하였습니다.")
             if is_debug == False:           
                 mail.sendEmail(mail.generate_event_message(result),"퍼즐앤드래곤 이벤트 일정 변경 알림")
+                log.info("변동된 이벤트에 대한 메일 발송 완료하였습니다.")
             else:
                 log.info("디버그 모드로 실행중이라 실제 메일 발송은 하지 않았습니다.")
-            log.info("변동된 이벤트에 대한 메일 발송 완료하였습니다.")
         else : 
             log.info("변동된 이벤트가 없습니다.")
             
@@ -127,6 +127,8 @@ def loadExceptionWordConfig(isDebug = False):
         return []
     
 
+# startDate 포함 이후 시간이자 endDate 시간은 아닌 경우 까지만 판단
+# endDate 포함 할 경우 끝나고 다음 날 알림이 오는데 좀 늦어서 endDate 날은 포함하지 않도록 설정.
 def isOpenDate(startDate,endDate):
     if startDate == None or endDate == None:
         return False
@@ -141,4 +143,3 @@ def is_instant_event(start_date,end_date):
 
 if __name__ == '__main__':
     notify_event_job(True)
-    

@@ -9,7 +9,7 @@ from custom_code.event_code import EventResultCode
 EVENT_URL  = "https://pad.neocyon.com/W/event/list.aspx"
 
 # returnValue = [title] + [targetUrl] + [startDATE] [endDate] +[updateDate] + [resultCode]
-def crawling(oldEventNameDateMap, exceptionWordList = [],isDebug = False):
+def crawling(oldEventNameDateMap:dict, exceptionWordList:list = [] ,isDebug = False):
     driver_instance = cr.init_driver()
     cr.move(driver_instance, EVENT_URL)
     cr.waitSecond(driver_instance, 3)
@@ -31,6 +31,8 @@ def crawling(oldEventNameDateMap, exceptionWordList = [],isDebug = False):
         if isDebug == True:
             print(title)
             log.info("%s page info" % (targetUrl))
+        if (targetUrl == 'https://pad.neocyon.com/W/event/view.aspx?id=2300') :
+            print("TARGET")
             
         isExcept = False
         for exceptionWord in exceptionWordList:
@@ -77,9 +79,9 @@ def execute_crawl(driver_instance,title,update_date,targetUrl,resultCode):
         if len(dateInfo) >= 2 :
             datetimeList.extend(dateInfo)
     
-    return [title] + [targetUrl] + findEventPeriod(datetimeList) + [update_date] + [resultCode]
+    return [title] + [targetUrl] + find_event_period(datetimeList) + [update_date] + [resultCode]
           
-def findEventPeriod(periodInfo):
+def find_event_period(periodInfo):
     if (len(periodInfo) == 0):
         return [None,None]
     
@@ -118,6 +120,6 @@ def __crawlingEventTest__():
 if __name__ == "__main__":
     testdict = dict()
     #testdict["퍼즐앤드래곤 대감사제"] = "2024-12-24"
-    result = crawling(testdict)
+    result = crawling(testdict,[],True)
     #__crawlingEventTest__()
     

@@ -4,7 +4,7 @@ class EventResultCode(Enum):
     UPDATE = 2
     EXIST = 3
 
-
+# Event 최종적으로 분류했을때 각 분류한 리스트들의 Label enum
 class EventTaskResultCode(Enum):
     START = 0
     CLOSE = 1
@@ -12,5 +12,8 @@ class EventTaskResultCode(Enum):
     UPDATE = 3 
     
 class EventStatus(Enum):
-    DISABLE = "0"
-    ENABLE = "1"
+    NOT_STARTED = "0"
+    OPENED = "1"
+    CLOESED = "2"
+    
+    
