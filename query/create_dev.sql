@@ -3,7 +3,7 @@ CREATE DATABASE padNotify;
 
 USE padNotify;
 
-CREATE TABLE `notify` (
+CREATE TABLE `notify_dev` (
    `id` varchar(6) NOT NULL,
    `title` varchar(200) NOT NULL,
    `date` date DEFAULT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE `notify` (
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
-CREATE TABLE `event` (
+CREATE TABLE `event_dev` (
    `name` varchar(100) NOT NULL,
    `link` varchar(200) NOT NULL,
    `status` varchar(10) NOT NULL,
