@@ -12,7 +12,7 @@
 - ~~우분투 22.04~~ ->  python 3.10 window 10
 
 # 사용 DB 
-- MySQL
+- MySQL 8.0.40
 
 # 라이브러리
 라이브러리 다운로드 코드
@@ -28,8 +28,9 @@ db.config , mail.config를 해당 project 내 생성해야함.
 host=db_host
 id=db_id
 password=db_password
+DB =DB_name
 ```
-DB 종류는 MySQL.
+DB는 MySQL 내 Database 이름
 
 만약 같은 서버 내 실행이라면 db_host 자리에 localhost나 127.0.0.1 입력
   
