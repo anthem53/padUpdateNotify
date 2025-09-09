@@ -62,7 +62,7 @@ def notify_event_job(is_debug = False):
             elif is_instant_event(start_date, end_date):
                 result[EventTaskResultCode.START.value].append((name,link))
                 result[EventTaskResultCode.CLOSE.value].append((name,link))
-                db_event.updateEventStatus(name,EventStatus.CLOESED.value,is_debug)
+                db_event.deleteEvent(name,is_debug)
             # open인데 status = 0인 경우는 새로 추가된 경우. 따라서 넣기
             elif isOpenDate(start_date,end_date) == True and status == EventStatus.NOT_STARTED.value:
                 result[EventTaskResultCode.START.value].append((name,link))
@@ -70,7 +70,7 @@ def notify_event_job(is_debug = False):
             # status는 1인데 close는 이제 이벤트가 끝난거. 역시 통보
             elif isOpenDate(start_date,end_date) == False and status == EventStatus.OPENED.value:
                 result[EventTaskResultCode.CLOSE.value].append((name,link))
-                db_event.updateEventStatus(name,EventStatus.CLOESED.value,is_debug)
+                db_event.deleteEvent(name,is_debug)
             elif isOpenDate(start_date,end_date) == False and status == EventStatus.NOT_STARTED.value:
                 log.info("이벤트 '%s'는 홈페이지에 등록 되었으나, 아직 시작하지 않았습니다." % (name))
                 pass
