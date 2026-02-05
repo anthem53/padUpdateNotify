@@ -78,7 +78,7 @@ def execute_crawl(driver_instance,title,update_date,targetUrl,resultCode):
         dateInfo = p.findall(sentence)
         if len(dateInfo) >= 2 :
             datetimeList.extend(dateInfo)
-    
+    print(title)
     return [title] + [targetUrl] + find_event_period(datetimeList) + [update_date] + [resultCode]
           
 def find_event_period(periodInfo):
@@ -91,11 +91,15 @@ def find_event_period(periodInfo):
     
     # 시작날 확인
     for datetimeStr in periodInfo:
-        curDate = datetime.datetime.strptime(datetimeStr,DATE_FORMAT).date()
-        if curDate < startDate :
-            startDate = curDate
-        if endDate < curDate :
-            endDate = curDate
+        try:
+            curDate = datetime.datetime.strptime(datetimeStr,DATE_FORMAT).date()
+            if curDate < startDate :
+                startDate = curDate
+            if endDate < curDate :
+                endDate = curDate
+        except Exception:
+            log.error("[crawling_event#find_event_period] 오류 Error 원인 : {0}".format(datetimeStr))
+        
         
     return [startDate,endDate]
 
