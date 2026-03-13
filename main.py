@@ -8,6 +8,7 @@ import status_test
 import time
 import traceback
 from scheduler import Scheduler
+from telegram_notify import init_bot
 
 def endFunction(isDebug = False):
     if (isDebug == False):
@@ -25,6 +26,7 @@ if __name__ == '__main__':
         quit()
         
     try :
+        init_bot()
         if len(sys.argv) < 2: 
             task_notice.notify_job();
             task_event.notify_event_job()
