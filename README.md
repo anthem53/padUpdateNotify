@@ -17,7 +17,7 @@
 # 라이브러리
 라이브러리 다운로드 코드
 ```
-pip install schedule selenium webdriver_manager pymysql beautifulsoup4 cryptography
+pip install schedule selenium webdriver_manager pymysql beautifulsoup4 cryptography python-telegram-bot
 ```
 
 # 설정 파일

@@ -1,0 +1,3 @@
+[submodule "LJH_SDK"]
+	path = LJH_SDK
+	url = https://github.com/anthem53/LJH_SDK.git
