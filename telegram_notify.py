@@ -1,6 +1,7 @@
 import telegram
 import configparser
 import asyncio
+import log
 
 config = configparser.ConfigParser()
 config.read("telegram.config")
@@ -9,6 +10,7 @@ config_chat_id = config['information']["chat_id"]
 
 def init_bot():
     global bot
+    log.info("텔레그램 봇이 실행 되었습니다.")
     bot = telegram.Bot(token)    
 
 async def test():
@@ -18,6 +20,7 @@ async def test():
 async def send(message):
     global bot
     await bot.send_message(chat_id=config_chat_id,text=message)
+    log.info("텔레그램 봇 채팅이 발송 되었습니다.")
 
 
 def generate_notice_message(newDatas,title):
