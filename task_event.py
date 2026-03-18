@@ -4,6 +4,7 @@ import db_event
 import log
 from datetime import date
 import traceback
+import telegram_notify as tn
 
 from custom_code.event_code import EventResultCode, EventTaskResultCode , EventStatus
 from model.event import Event
@@ -85,9 +86,11 @@ def notify_event_job(is_debug = False):
             log.info("변동된 이벤트가 있어 메일 발송을 시작하였습니다.")
             if is_debug == False:           
                 mail.sendEmail(mail.generate_event_message(result),"퍼즐앤드래곤 이벤트 일정 변경 알림")
+                tn.send(tn.generate_event_message(result))
                 log.info("변동된 이벤트에 대한 메일 발송 완료하였습니다.")
             else:
                 log.info("디버그 모드로 실행중이라 실제 메일 발송은 하지 않았습니다.")
+                tn.send(tn.generate_event_message(result))
         else : 
             log.info("변동된 이벤트가 없습니다.")
             
@@ -96,6 +99,7 @@ def notify_event_job(is_debug = False):
     except Exception as e:
         if is_debug == False:
             mail.sendEmail(mail.generate_error_message_with_text(traceback.format_exc()),"퍼즐앤드래곤 이벤트 업데이트 감지 에러 발생")
+            tn.send(tn.generate_error_message_with_text(traceback.format_exc()))
             log.error("에러로 인해 메일이 전송되지 않았습니다.")
         else: pass
         log.write(traceback.format_exc())
@@ -141,4 +145,5 @@ def is_instant_event(start_date,end_date):
     
 
 if __name__ == '__main__':
+    tn.init_bot()
     notify_event_job(True)
