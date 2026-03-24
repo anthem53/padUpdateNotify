@@ -19,6 +19,7 @@ def notify_job(is_debug = False):
             tn.send(tn.generate_notice_message(newDatas,'퍼즐앤드래곤 신규 업데이트'))
             log.info("메일 발송 이벤트가 완료 되었습니다.")
         else:
+            tn.send(tn.generate_no_event_message("NOTICE")) 
             log.info("업데이트된 내용이 없어 메일발송하지 않았습니다.")
         db_notice.close()
     except Exception as e:

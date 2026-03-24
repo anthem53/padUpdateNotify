@@ -70,6 +70,14 @@ def  generate_event_message(result):
     msg += "\n\n\n 퍼즐앤드래곤 공식 홈페이지 이벤트 사이트 : https://pad.neocyon.com/W/event/list.aspx"    
     return msg
 
+def generate_no_event_message(event:str) ->str:
+    content = (
+        f"별도 이벤트가 감지 되지 않아 메일은 발송하지 않았습니다."
+        f""
+        f"대상 이벤트 :  {event}\n\n"
+    )    
+    return content
+
 def generate_error_message_with_text(errorText:str):
     content = "에러로 인해 업데이트 체크 시스템이 종료되었습니다. 확인 해주십시오.\n\n- 에러 내용\n\n"
     
