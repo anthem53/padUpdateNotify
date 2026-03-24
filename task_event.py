@@ -91,7 +91,8 @@ def notify_event_job(is_debug = False):
             else:
                 log.info("디버그 모드로 실행중이라 실제 메일 발송은 하지 않았습니다.")
                 tn.send(tn.generate_event_message(result))
-        else : 
+        else :
+            tn.send(tn.generate_no_event_message("EVENT")) 
             log.info("변동된 이벤트가 없습니다.")
             
         db_event.close()
