@@ -59,6 +59,9 @@ def notify_event_job(is_debug = False):
             elif name not in crawled_event_name_list:
                 db_event.deleteEvent(name,is_debug)
                 result[EventTaskResultCode.CLOSE.value].append((name,link))
+            elif is_close_date(end_date) == True:
+                result[EventTaskResultCode.CLOSE.value].append((name,link))
+                db_event.deleteEvent(name,is_debug)
             # 크롤링한 이벤트의 시작날짜, 종료날짜가 오늘인 경우. 시작, 종료 이벤트 둘다 진행 및 종료 처리.
             elif is_instant_event(start_date, end_date):
                 result[EventTaskResultCode.START.value].append((name,link))
@@ -138,6 +141,12 @@ def isOpenDate(start_date,end_date):
         return False
     curDate= date.today()
     return start_date <= curDate and curDate < end_date
+
+def is_close_date(end_date):
+    if end_date == None:
+        return False
+    curDate= date.today()
+    return curDate >= end_date
 
 
 def is_instant_event(start_date,end_date):
