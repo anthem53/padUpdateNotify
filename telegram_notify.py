@@ -1,6 +1,7 @@
 import telegram
 import configparser
 import asyncio
+import threading
 import log
 from custom_code.event_code import EventTaskResultCode
 
@@ -8,11 +9,33 @@ config = configparser.ConfigParser()
 config.read("telegram.config")
 token = config['information']["token"]
 config_chat_id = config['information']["chat_id"]
+bot = None
+loop = None
+loop_thread = None
 
-def init_bot():
-    global bot
+def _loop_thread_target():
+    global loop, bot
+    asyncio.set_event_loop(loop)
     log.info("텔레그램 봇이 실행 되었습니다.")
-    bot = telegram.Bot(token)    
+    bot = telegram.Bot(token)
+    loop.run_forever()
+    # 여기까지 오면 루프 종료
+    loop.close()
+
+def start_telegram_loop():
+    global loop, loop_thread
+    loop = asyncio.new_event_loop()
+    loop_thread = threading.Thread(target=_loop_thread_target,daemon=True)
+    loop_thread.start()
+    
+def stop_telegram_loop():
+    """프로그램 종료 시 호출"""
+    global loop, loop_thread
+    if loop is not None:
+        loop.call_soon_threadsafe(loop.stop)
+    if loop_thread is not None:
+        loop_thread.join()
+
 
 async def test():
     global bot
@@ -24,7 +47,11 @@ async def send_async(message):
     log.info("텔레그램 봇 채팅이 발송 되었습니다.")
     
 def send(message):
-    asyncio.run(send_async(message))
+    global loop 
+    if loop is None :
+        raise RuntimeError("아직 텔레그램 Loop가 초기화 되지 않았습니다.")
+    future = asyncio.run_coroutine_threadsafe(send_async(message), loop)
+    return future.result()
 
 
 def generate_notice_message(newDatas,title):

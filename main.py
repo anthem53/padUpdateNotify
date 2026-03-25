@@ -8,7 +8,7 @@ import status_test
 import time
 import traceback
 from scheduler import Scheduler
-from telegram_notify import init_bot
+from telegram_notify import start_telegram_loop, stop_telegram_loop
 
 def endFunction(isDebug = False):
     if (isDebug == False):
@@ -26,7 +26,7 @@ if __name__ == '__main__':
         quit()
         
     try :
-        init_bot()
+        start_telegram_loop()
         if len(sys.argv) < 2: 
             task_notice.notify_job();
             task_event.notify_event_job()
@@ -48,10 +48,13 @@ if __name__ == '__main__':
                 except KeyboardInterrupt:
                     log.info("KeyboardInterrupt로 모든 작업이 중지 되었습니다.")
                     scheduleWorker.setStatus(False)
+                    stop_telegram_loop()
                     quit()
+        stop_telegram_loop()
     except Exception as e:
         log.error("스케쥴러 실행 중 에러 발생하였습니다.")
         log.write(traceback.format_exc())
+        stop_telegram_loop()
         quit()
     
 
