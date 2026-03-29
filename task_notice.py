@@ -5,6 +5,8 @@ import log
 import traceback
 import telegram_notify as tn
 
+MONGO_DB_CONNECTION_NAME = 'TASK_NOTIFY'
+
 def notify_job(is_debug = False):
     try:
         log.info("공지 메일 발송 이벤트가 시작 되었습니다.")

@@ -9,6 +9,7 @@ import time
 import traceback
 from scheduler import Scheduler
 from telegram_notify import start_telegram_loop, stop_telegram_loop
+from LJH_SDK.mongo_db import init_mongo
 
 def endFunction(isDebug = False):
     if (isDebug == False):
@@ -27,6 +28,7 @@ if __name__ == '__main__':
         
     try :
         start_telegram_loop()
+        init_mongo()
         if len(sys.argv) < 2: 
             task_notice.notify_job();
             task_event.notify_event_job()
