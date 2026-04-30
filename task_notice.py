@@ -17,7 +17,7 @@ def notify_job(is_debug = False):
             db_notice.clearData()
             db_notice.insertRawDatas(rawDatas)
             log.info("DB 삽입 완료, 메일 전송 전 ")
-            mail.sendEmail(mail.generate_notice_message(newDatas),'퍼즐앤드래곤 신규 업데이트')
+            #mail.sendEmail(mail.generate_notice_message(newDatas),'퍼즐앤드래곤 신규 업데이트')
             tn.send(tn.generate_notice_message(newDatas,'퍼즐앤드래곤 신규 업데이트'))
             log.info("메일 발송 이벤트가 완료 되었습니다.")
         else:
@@ -25,7 +25,7 @@ def notify_job(is_debug = False):
             log.info("업데이트된 내용이 없어 메일발송하지 않았습니다.")
         db_notice.close()
     except Exception as e:
-        mail.sendEmail(mail.generate_error_message_with_text(traceback.format_exc()))
+        #mail.sendEmail(mail.generate_error_message_with_text(traceback.format_exc()))
         tn.send(tn.generate_error_message_with_text(traceback.format_exc()))
         log.error("에러로 인해 메일이 전송되지 않았습니다.")
         log.write(traceback.format_exc())
