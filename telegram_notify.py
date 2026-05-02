@@ -1,4 +1,7 @@
 import telegram
+from telegram.request import HTTPXRequest
+from concurrent.futures import TimeoutError as FutureTimeoutError
+from telegram.error import TimedOut, NetworkError
 import configparser
 import asyncio
 import threading
@@ -16,8 +19,15 @@ loop_thread = None
 def _loop_thread_target():
     global loop, bot
     asyncio.set_event_loop(loop)
+    request = HTTPXRequest(
+        connection_pool_size=5,
+        connect_timeout=20.0,
+        read_timeout=20.0,
+        write_timeout=20.0,
+        pool_timeout=5.0,
+    )
     log.info("텔레그램 봇이 실행 되었습니다.")
-    bot = telegram.Bot(token)
+    bot = telegram.Bot(token, request=request)
     loop.run_forever()
     # 여기까지 오면 루프 종료
     loop.close()
@@ -48,10 +58,18 @@ async def send_async(message):
     
 def send(message):
     global loop 
-    if loop is None :
-        raise RuntimeError("아직 텔레그램 Loop가 초기화 되지 않았습니다.")
-    future = asyncio.run_coroutine_threadsafe(send_async(message), loop)
-    return future.result()
+    try : 
+        if loop is None :
+            raise RuntimeError("아직 텔레그램 Loop가 초기화 되지 않았습니다.")
+        future = asyncio.run_coroutine_threadsafe(send_async(message), loop)
+        return future.result(timeout=25)
+    except FutureTimeoutError:
+        log.error("텔레그램 전송 future 대기 시간 초과")
+    except (TimedOut, NetworkError) as e:
+        log.error(f"텔레그램 전송 실패: {e}")
+    except Exception as e:
+        log.error(e)
+        return None;
 
 
 def generate_notice_message(newDatas,title):
@@ -113,9 +131,10 @@ def generate_error_message_with_text(errorText:str):
     return content
 
 if __name__ == '__main__':
-    init_bot()
-    newDatas =[]
-    asyncio.run(send(generate_notice_message(newDatas,'퍼즐앤드래곤 신규 업데이트')))
+    start_telegram_loop()  # init_bot과 같은 의미라면 이걸 호출
+    newDatas = []
+    msg = generate_notice_message(newDatas, '퍼즐앤드래곤 신규 업데이트')
+    send(msg)
     
     
     # https://api.telegram.org/bot8600374599:AAEFxEkemzCQjlTADBDZsBwF7MZhN1aQwbk/getUpdates
