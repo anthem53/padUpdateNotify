@@ -24,7 +24,10 @@ class Scheduler (threading.Thread):
                 log.info(name + " 스케줄이 시작되었습니다.")
                 schedule.every(1).minutes.do(job)
         while self.status:
-            schedule.run_pending()
+            try :
+                schedule.run_pending()
+            except Exception as e:
+                log.error(e)
             time.sleep(1)
             
     def setStatus(self,status:bool):

@@ -21,10 +21,10 @@ def _loop_thread_target():
     asyncio.set_event_loop(loop)
     request = HTTPXRequest(
         connection_pool_size=5,
-        connect_timeout=20.0,
-        read_timeout=20.0,
-        write_timeout=20.0,
-        pool_timeout=5.0,
+        connect_timeout=40.0,
+        read_timeout=40.0,
+        write_timeout=40.0,
+        pool_timeout=10.0,
     )
     log.info("텔레그램 봇이 실행 되었습니다.")
     bot = telegram.Bot(token, request=request)
