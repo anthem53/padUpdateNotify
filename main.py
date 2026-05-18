@@ -10,6 +10,7 @@ import traceback
 from scheduler import Scheduler
 from telegram_notify import start_telegram_loop, stop_telegram_loop
 from LJH_SDK.mongo_db import init_mongo
+import mongo_impl
 
 def endFunction(isDebug = False):
     if (isDebug == False):
@@ -29,9 +30,11 @@ if __name__ == '__main__':
     try :
         start_telegram_loop()
         init_mongo()
+        mongo_impl.set_mongo()
         if len(sys.argv) < 2: 
             task_notice.notify_job();
             task_event.notify_event_job()
+            mongo_impl.insert_log("퍼즐앤드래곤 크롤링이 완료 되었습니다.")
         else :
             isDebug = False
             if len(sys.argv) == 3: 
