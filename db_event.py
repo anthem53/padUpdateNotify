@@ -66,6 +66,8 @@ def isOpenEvent(name,startDate,endDate,is_debug = False):
     result = db.fetchall(get_conn_name())
     return len(result) > 0
 
+
+
 # event endDate 업데이트
 def updateEventDate(name, endDate,updateDate,is_debug = False):
     sql = "UPDATE "+ get_target_table(is_debug) + " SET end_date = %s, update_date = %s WHERE name = %s"
@@ -75,6 +77,32 @@ def updateEventDate(name, endDate,updateDate,is_debug = False):
 def update_event(name,link, end_date,update_date,is_debug = False):
     sql = "UPDATE "+ get_target_table(is_debug) + " SET link = %s, end_date = %s, update_date = %s WHERE name = %s"
     db.execute(get_conn_name(),sql,(link, end_date, update_date,name))
+    
+def update_event_v3(name, link=None,status=None,start_date=None, end_date=None,update_date=None,is_debug =False):
+    if link is None and status is None and start_date is None and end_date is None and update_date is None:
+        return;
+        
+    sql = "UPDATE "+ get_target_table(is_debug) + " SET"
+    param = []
+    if link is not None :
+        sql += " " + "link=%s, "
+        param.append(link)
+    if status is not None :
+        sql += " " + "status=%s, "
+        param.append(status)
+    if start_date is not None :
+        sql += " " + "start_date=%s, "
+        param.append(start_date)
+    if end_date is not None :
+        sql += " " + "end_date=%s, "
+        param.append(end_date)
+    if update_date is not None :
+        sql += " " + "update_date=%s, "
+        param.append(update_date)
+    sql = sql.removesuffix(", ")
+    sql += " WHERE name = %s"
+    param.append(name)
+    db.execute(get_conn_name(),sql,(tuple(param)))
 
 #이벤트 status 수정
 def updateEventStatus(name, status,is_debug = False):

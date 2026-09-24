@@ -22,7 +22,7 @@ def crawling(exceptionWordList:list = [] ,isDebug = False):
                 print(e.text)
             title,rawDate = e.text.split("\n")
             title = title.replace("[이벤트]", "").strip()
-            update_date = rawDate.replace("등록일","").strip()
+            update_date = datetime.datetime.strptime(rawDate.replace("등록일", "").strip(), "%Y-%m-%d").date()
             targetUrl = cr.getChildElmentByTagName(e,"a")[0].get_attribute('href')
             targetUrls.append((title,update_date,targetUrl))
         
