@@ -33,7 +33,7 @@ if __name__ == '__main__':
         mongo_impl.set_mongo()
         if len(sys.argv) < 2: 
             task_notice.notify_job();
-            task_event.notify_event_job()
+            task_event_v3.notify_event_job()
             mongo_impl.insert_log("퍼즐앤드래곤 크롤링이 완료 되었습니다.")
         else :
             isDebug = False
