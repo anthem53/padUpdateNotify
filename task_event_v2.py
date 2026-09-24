@@ -1,5 +1,5 @@
 import mail
-import crawling_event
+import crawling_event_only
 import db_event
 import log
 from datetime import date
@@ -21,14 +21,16 @@ def notify_event_job(is_debug = False):
         exception_word_list = load_exception_word_config()
         
         # event 크롤링 
-        crawled_event_list = crawling_event.crawling(old_event_name_date_map,exception_word_list) 
+        crawled_event_list = crawling_event_only.crawling(exception_word_list) 
         #crawled_event_list = [['서비스 12주년 기념 스페셜 세트 판매!', 'https://pad.neocyon.com/W/event/view.aspx?id=2235', datetime.date(2024, 12, 16), datetime.date(2025, 1, 12)], ['대감사제! 앙케이트 슈퍼 갓 페스티벌 개최 결정!', 'None', 'None', 'None'], ['레어 에그 ~트리 카니발~', 'None', 'None', 'None'], ['그라비티 네오싸이언 설문조사', 'https://pad.neocyon.com/Poll.aspx?PollGroupSeq=206', None, None], ['겅호 콜라보 외전 캐릭터가 기간한정으로 등장!', 'None', 'None', 'None'], ['서비스 12주년 기념 이벤트!', 'None', 'None', 'None'], ['퍼즐앤드래곤 대감사제', 'None', 'None', 'None'], ['[마법석 100개+대감사제 세트 [12월]] 판매!', 'None', 'None', 'None'], ['[대감사제 스페셜 세트] 판매!', 'None', 'None', 'None']]
+    
+        for crawled_event in crawled_event_list :
+            crawled_event.append(find_event_result_code(crawled_event,old_event_name_date_map))
     
         # crawled_event_list elemnet  [title , targetUrl , start_date, end_date ]
         # DB 검증시 존재 유무 확인 위함.
         crawled_event_name_list = [elem[0] for elem  in crawled_event_list]
         
-        quit()
         updateList = set()
         
         # 만약 새로운 놈들이라면 일단 DB 넣기
@@ -107,6 +109,17 @@ def notify_event_job(is_debug = False):
         else: pass
         log.write(traceback.format_exc())
         db_event.close()
+
+def find_event_result_code(crawled_event,event_name_date_map):
+    name = crawled_event[0]
+    publised_date = crawled_event[4]
+    if name in event_name_date_map:
+        if publised_date == event_name_date_map[name]:
+            return EventResultCode.EXIST
+        else : 
+            return EventResultCode.UPDATE
+    else :
+        return EventResultCode.NEW
 
 def is_result_empty(result):
     for subList in result:

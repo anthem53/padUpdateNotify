@@ -1,6 +1,6 @@
 import sys
 import task_notice
-import task_event
+import task_event, task_event_v2
 import atexit
 import log
 import mail
@@ -43,7 +43,7 @@ if __name__ == '__main__':
             atexit.register(lambda : endFunction(isDebug))
             scheduleWorker = Scheduler(isDebug)
             scheduleWorker.setScheduleTask("공지 크롤링",task_notice.notify_job,"18:00")
-            scheduleWorker.setScheduleTask("이벤트 크롤링",task_event.notify_event_job,"18:00")
+            scheduleWorker.setScheduleTask("이벤트 크롤링",task_event_v2.notify_event_job,"18:00")
             scheduleWorker.start()
             
             #메인 thread에서 Keyboard Interrupt 발생시 스케쥴러도 종료할 수 있도록 처리.

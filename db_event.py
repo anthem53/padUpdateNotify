@@ -49,7 +49,7 @@ def selectEventNameList(is_debug = False):
     return [elem[0] for elem in result]
 
 #다건 조회 with Map
-def selectEventNameDateList(is_debug = False):
+def select_event_name_date_map(is_debug = False):
     sql = "SELECT name,update_date FROM "+ get_target_table(is_debug)
     db.execute(get_conn_name(),sql)
     result = db.fetchall(get_conn_name())
