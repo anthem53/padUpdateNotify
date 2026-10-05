@@ -11,6 +11,7 @@ class EventTaskResultCode(Enum):
     NEED = 2
     UPDATE = 3 
     NOT_YET = 4
+    RUNNING = 5
     
 class EventStatus(Enum):
     NOT_STARTED = "0"

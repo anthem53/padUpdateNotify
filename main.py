@@ -1,6 +1,6 @@
 import sys
 import task_notice
-import task_event, task_event_v3
+import task_event
 import atexit
 import log
 import mail
@@ -33,7 +33,7 @@ if __name__ == '__main__':
         mongo_impl.set_mongo()
         if len(sys.argv) < 2: 
             task_notice.notify_job();
-            task_event_v3.notify_event_job()
+            task_event.notify_event_job()
             mongo_impl.insert_log("퍼즐앤드래곤 크롤링이 완료 되었습니다.")
         else :
             isDebug = False
@@ -43,7 +43,7 @@ if __name__ == '__main__':
             atexit.register(lambda : endFunction(isDebug))
             scheduleWorker = Scheduler(isDebug)
             scheduleWorker.setScheduleTask("공지 크롤링",task_notice.notify_job,"18:00")
-            scheduleWorker.setScheduleTask("이벤트 크롤링",task_event_v3.notify_event_job,"18:00")
+            scheduleWorker.setScheduleTask("이벤트 크롤링",task_event.notify_event_job,"18:00")
             scheduleWorker.start()
             
             #메인 thread에서 Keyboard Interrupt 발생시 스케쥴러도 종료할 수 있도록 처리.
